@@ -20,18 +20,15 @@ public class Organization {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "industry")
+    @JoinColumn(name = "industry_id")
     private Industry industry;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact")
+    @JoinColumn(name = "contact_id")
     private Contact contact;
 
-    @ManyToMany
-    @JoinTable(name = "organization_location",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "location"))
-    private Set<Location> locations = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "organization")
+    private Set<OrganizationLocation> organizationLocations = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "organization")
     private Set<JobPost> jobPosts = new LinkedHashSet<>();
@@ -76,12 +73,12 @@ public class Organization {
         this.contact = contact;
     }
 
-    public Set<Location> getLocations() {
-        return locations;
+    public Set<OrganizationLocation> getOrganizationLocations() {
+        return organizationLocations;
     }
 
-    public void setLocations(Set<Location> locations) {
-        this.locations = locations;
+    public void setOrganizationLocations(Set<OrganizationLocation> organizationLocations) {
+        this.organizationLocations = organizationLocations;
     }
 
     public Set<JobPost> getJobPosts() {

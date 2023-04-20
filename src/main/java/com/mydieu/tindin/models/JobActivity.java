@@ -2,22 +2,22 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "job_activity")
 public class JobActivity {
-    @EmbeddedId
-    private JobActivityId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("jobId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
     private JobPost job;
 
-    @MapsId("applicantId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "applicant_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -25,13 +25,13 @@ public class JobActivity {
     private User userApply;
 
     @Column(name = "apply_date", nullable = false)
-    private Instant applyDate;
+    private Date applyDate;
 
-    public JobActivityId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(JobActivityId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -59,11 +59,11 @@ public class JobActivity {
         this.userApply = userApply;
     }
 
-    public Instant getApplyDate() {
+    public Date getApplyDate() {
         return applyDate;
     }
 
-    public void setApplyDate(Instant applyDate) {
+    public void setApplyDate(Date applyDate) {
         this.applyDate = applyDate;
     }
 

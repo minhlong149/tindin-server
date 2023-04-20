@@ -3,8 +3,6 @@ package com.mydieu.tindin.models;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "\"user\"")
@@ -18,8 +16,8 @@ public class User {
     @JoinColumn(name = "id", nullable = false)
     private Account account;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(name = "first_name", nullable = false, length = Integer.MAX_VALUE)
@@ -28,24 +26,22 @@ public class User {
     @Column(name = "last_name", length = Integer.MAX_VALUE)
     private String lastName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private Gender gender;
-
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Column(name = "registration_date")
-    private Date registrationDate;
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(name = "profile_url", length = Integer.MAX_VALUE)
     private String profileUrl;
 
+    @Column(name = "registration_date")
+    private Date registrationDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact")
+    @JoinColumn(name = "contact_id")
     private Contact contact;
-    @OneToMany(mappedBy = "userApply")
-    private Set<JobActivity> jobActivities = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -77,14 +73,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
     }
 
     public Date getDateOfBirth() {
@@ -119,19 +107,19 @@ public class User {
         this.contact = contact;
     }
 
-    public Set<JobActivity> getJobActivities() {
-        return jobActivities;
-    }
-
-    public void setJobActivities(Set<JobActivity> jobActivities) {
-        this.jobActivities = jobActivities;
-    }
-
     public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

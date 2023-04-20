@@ -9,39 +9,39 @@ import java.util.Set;
 @Table(name = "applicant")
 public class Applicant {
     @Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "id", nullable = false)
     private User user;
 
     @Column(name = "open_for_job")
-    private Integer openForJob;
+    private Boolean openForJob;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_title")
+    @JoinColumn(name = "job_title_id")
     private JobTitle jobTitle;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experience_level")
+    @JoinColumn(name = "experience_level_id")
     private ExperienceLevel experienceLevel;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location")
+    @JoinColumn(name = "location_id")
     private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_type_prefer")
-    private JobType jobTypePrefer;
+    @JoinColumn(name = "job_type_id")
+    private JobType jobType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "industry")
+    @JoinColumn(name = "industry_id")
     private Industry industry;
 
-    @Column(name = "salary_prefer")
-    private Integer salaryPrefer;
+    @Column(name = "salary")
+    private Integer salary;
 
     @OneToMany(mappedBy = "applicant")
     private Set<JobActivity> jobActivities = new LinkedHashSet<>();
@@ -71,11 +71,11 @@ public class Applicant {
         this.user = user;
     }
 
-    public Integer getOpenForJob() {
+    public Boolean getOpenForJob() {
         return openForJob;
     }
 
-    public void setOpenForJob(Integer openForJob) {
+    public void setOpenForJob(Boolean openForJob) {
         this.openForJob = openForJob;
     }
 
@@ -103,12 +103,12 @@ public class Applicant {
         this.location = location;
     }
 
-    public JobType getJobTypePrefer() {
-        return jobTypePrefer;
+    public JobType getJobType() {
+        return jobType;
     }
 
-    public void setJobTypePrefer(JobType jobTypePrefer) {
-        this.jobTypePrefer = jobTypePrefer;
+    public void setJobType(JobType jobType) {
+        this.jobType = jobType;
     }
 
     public Industry getIndustry() {
@@ -119,12 +119,12 @@ public class Applicant {
         this.industry = industry;
     }
 
-    public Integer getSalaryPrefer() {
-        return salaryPrefer;
+    public Integer getSalary() {
+        return salary;
     }
 
-    public void setSalaryPrefer(Integer salaryPrefer) {
-        this.salaryPrefer = salaryPrefer;
+    public void setSalary(Integer salary) {
+        this.salary = salary;
     }
 
     public Set<JobActivity> getJobActivities() {

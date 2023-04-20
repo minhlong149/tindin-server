@@ -5,24 +5,24 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "experience_requirement")
 public class ExperienceRequirement {
-    @EmbeddedId
-    private ExperienceRequirementId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("jobId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
     private JobPost job;
 
-    @MapsId("experienceLevel")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "experience_level", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "experience_level_id")
     private ExperienceLevel experienceLevel;
 
-    public ExperienceRequirementId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(ExperienceRequirementId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

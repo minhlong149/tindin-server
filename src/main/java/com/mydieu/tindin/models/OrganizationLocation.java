@@ -5,33 +5,33 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "organization_location")
 public class OrganizationLocation {
-    @EmbeddedId
-    private OrganizationLocationId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("id")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", nullable = false)
-    private Organization id1;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 
-    @MapsId("location")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "location", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
     private Location location;
 
-    public OrganizationLocationId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(OrganizationLocationId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Organization getId1() {
-        return id1;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setId1(Organization id1) {
-        this.id1 = id1;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public Location getLocation() {

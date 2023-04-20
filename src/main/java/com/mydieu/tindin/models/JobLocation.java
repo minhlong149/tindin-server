@@ -5,24 +5,24 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "job_location")
 public class JobLocation {
-    @EmbeddedId
-    private JobLocationId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("jobId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
     private JobPost job;
 
-    @MapsId("location")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "location", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
     private Location location;
 
-    public JobLocationId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(JobLocationId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

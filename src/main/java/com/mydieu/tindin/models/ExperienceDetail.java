@@ -7,27 +7,25 @@ import java.util.Date;
 @Entity
 @Table(name = "experience_detail")
 public class ExperienceDetail {
-    @EmbeddedId
-    private ExperienceDetailId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("applicantId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "applicant_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
-    @MapsId("jobTitle")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_title", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_title_id")
     private JobTitle jobTitle;
 
-    @MapsId("experienceLevel")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "experience_level", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "experience_level_id")
     private ExperienceLevel experienceLevel;
 
-    @MapsId("organization")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "organization", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id")
     private Organization organization;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,17 +35,17 @@ public class ExperienceDetail {
     @Column(name = "start_date")
     private Date startDate;
 
-    @Column(name = "\"endDate\"")
+    @Column(name = "end_date")
     private Date endDate;
 
     @Column(name = "description")
     private Integer description;
 
-    public ExperienceDetailId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(ExperienceDetailId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

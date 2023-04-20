@@ -5,24 +5,24 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "degree_requirement")
 public class DegreeRequirement {
-    @EmbeddedId
-    private DegreeRequirementId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("jobId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
     private JobPost job;
 
-    @MapsId("degree")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "degree", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "degree_id")
     private Degree degree;
 
-    public DegreeRequirementId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(DegreeRequirementId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -3,8 +3,8 @@ package com.mydieu.tindin.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "skillset")
-public class Skillset {
+@Table(name = "skill")
+public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

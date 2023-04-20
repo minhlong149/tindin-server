@@ -47,34 +47,25 @@ public class JobPost {
     private Date closingDate;
 
     @Column(name = "is_open")
-    private Integer isOpen;
+    private Boolean isOpen;
 
-    @OneToMany(mappedBy = "jobPost")
+    @OneToMany(mappedBy = "job")
+    private Set<JobActivity> jobActivities = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "job")
     private Set<SkillRequirement> skillRequirements = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "job_location",
-            joinColumns = @JoinColumn(name = "job_id"),
-            inverseJoinColumns = @JoinColumn(name = "location"))
-    private Set<Location> locations = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "job")
+    private Set<JobLocation> jobLocations = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "major_requirement",
-            joinColumns = @JoinColumn(name = "job_id"),
-            inverseJoinColumns = @JoinColumn(name = "major"))
-    private Set<Major> majors = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "job")
+    private Set<MajorRequirement> majorRequirements = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "experience_requirement",
-            joinColumns = @JoinColumn(name = "job_id"),
-            inverseJoinColumns = @JoinColumn(name = "experience_level"))
-    private Set<ExperienceLevel> experienceLevels = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "job")
+    private Set<ExperienceRequirement> experienceRequirements = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "degree_requirement",
-            joinColumns = @JoinColumn(name = "job_id"),
-            inverseJoinColumns = @JoinColumn(name = "degree"))
-    private Set<Degree> degrees = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "job")
+    private Set<DegreeRequirement> degreeRequirements = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -156,12 +147,20 @@ public class JobPost {
         this.closingDate = closingDate;
     }
 
-    public Integer getIsOpen() {
+    public Boolean getIsOpen() {
         return isOpen;
     }
 
-    public void setIsOpen(Integer isOpen) {
+    public void setIsOpen(Boolean isOpen) {
         this.isOpen = isOpen;
+    }
+
+    public Set<JobActivity> getJobActivities() {
+        return jobActivities;
+    }
+
+    public void setJobActivities(Set<JobActivity> jobActivities) {
+        this.jobActivities = jobActivities;
     }
 
     public Set<SkillRequirement> getSkillRequirements() {
@@ -172,36 +171,36 @@ public class JobPost {
         this.skillRequirements = skillRequirements;
     }
 
-    public Set<Location> getLocations() {
-        return locations;
+    public Set<JobLocation> getJobLocations() {
+        return jobLocations;
     }
 
-    public void setLocations(Set<Location> locations) {
-        this.locations = locations;
+    public void setJobLocations(Set<JobLocation> jobLocations) {
+        this.jobLocations = jobLocations;
     }
 
-    public Set<Major> getMajors() {
-        return majors;
+    public Set<MajorRequirement> getMajorRequirements() {
+        return majorRequirements;
     }
 
-    public void setMajors(Set<Major> majors) {
-        this.majors = majors;
+    public void setMajorRequirements(Set<MajorRequirement> majorRequirements) {
+        this.majorRequirements = majorRequirements;
     }
 
-    public Set<ExperienceLevel> getExperienceLevels() {
-        return experienceLevels;
+    public Set<ExperienceRequirement> getExperienceRequirements() {
+        return experienceRequirements;
     }
 
-    public void setExperienceLevels(Set<ExperienceLevel> experienceLevels) {
-        this.experienceLevels = experienceLevels;
+    public void setExperienceRequirements(Set<ExperienceRequirement> experienceRequirements) {
+        this.experienceRequirements = experienceRequirements;
     }
 
-    public Set<Degree> getDegrees() {
-        return degrees;
+    public Set<DegreeRequirement> getDegreeRequirements() {
+        return degreeRequirements;
     }
 
-    public void setDegrees(Set<Degree> degrees) {
-        this.degrees = degrees;
+    public void setDegreeRequirements(Set<DegreeRequirement> degreeRequirements) {
+        this.degreeRequirements = degreeRequirements;
     }
 
 }

@@ -5,27 +5,27 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "skill_requirement")
 public class SkillRequirement {
-    @EmbeddedId
-    private SkillRequirementId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("jobId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
     private JobPost job;
 
-    @MapsId("skill")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "skill", nullable = false)
-    private Skillset skill;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "skill_id")
+    private Skill skill;
 
     @Column(name = "skill_level")
     private Integer skillLevel;
 
-    public SkillRequirementId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(SkillRequirementId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -37,11 +37,11 @@ public class SkillRequirement {
         this.job = job;
     }
 
-    public Skillset getSkill() {
+    public Skill getSkill() {
         return skill;
     }
 
-    public void setSkill(Skillset skill) {
+    public void setSkill(Skill skill) {
         this.skill = skill;
     }
 

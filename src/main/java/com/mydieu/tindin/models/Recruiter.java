@@ -9,12 +9,12 @@ import java.util.Set;
 @Table(name = "recruiter")
 public class Recruiter {
     @Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

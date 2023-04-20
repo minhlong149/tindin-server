@@ -7,27 +7,25 @@ import java.util.Date;
 @Entity
 @Table(name = "education_detail")
 public class EducationDetail {
-    @EmbeddedId
-    private EducationDetailId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("applicantId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "applicant_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
-    @MapsId("degree")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "degree", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "degree_id")
     private Degree degree;
 
-    @MapsId("major")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "major", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id")
     private Major major;
 
-    @MapsId("organization")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "organization", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id")
     private Organization organization;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,11 +41,11 @@ public class EducationDetail {
     @Column(name = "gpa")
     private Integer gpa;
 
-    public EducationDetailId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(EducationDetailId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
