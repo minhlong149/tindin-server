@@ -2,7 +2,7 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -18,20 +18,25 @@ public class User {
     @JoinColumn(name = "id", nullable = false)
     private Account account;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
+
     @Column(name = "first_name", nullable = false, length = Integer.MAX_VALUE)
     private String firstName;
 
     @Column(name = "last_name", length = Integer.MAX_VALUE)
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    private Integer gender;
+    private Gender gender;
 
     @Column(name = "date_of_birth")
-    private Instant dateOfBirth;
+    private Date dateOfBirth;
 
     @Column(name = "registration_date")
-    private Instant registrationDate;
+    private Date registrationDate;
 
     @Column(name = "profile_url", length = Integer.MAX_VALUE)
     private String profileUrl;
@@ -74,27 +79,27 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Integer getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public Instant getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Instant dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Instant getRegistrationDate() {
+    public Date getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(Instant registrationDate) {
+    public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
     }
 
@@ -122,10 +127,11 @@ public class User {
         this.jobActivities = jobActivities;
     }
 
-/*
-    TODO [JPA Buddy] create field to map the 'role' column
-     Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "role", columnDefinition = "role not null")
-    private Object role;
-*/
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

@@ -2,7 +2,7 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "education_detail")
@@ -35,10 +35,10 @@ public class EducationDetail {
     private Location location;
 
     @Column(name = "start_date")
-    private Instant startDate;
+    private Date startDate;
 
     @Column(name = "completion_date")
-    private Instant completionDate;
+    private Date completionDate;
 
     @Column(name = "gpa")
     private Integer gpa;
@@ -91,19 +91,19 @@ public class EducationDetail {
         this.location = location;
     }
 
-    public Instant getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Instant getCompletionDate() {
+    public Date getCompletionDate() {
         return completionDate;
     }
 
-    public void setCompletionDate(Instant completionDate) {
+    public void setCompletionDate(Date completionDate) {
         this.completionDate = completionDate;
     }
 

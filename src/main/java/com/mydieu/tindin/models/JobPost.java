@@ -2,7 +2,7 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -41,10 +41,10 @@ public class JobPost {
     private Contact contact;
 
     @Column(name = "created_date", nullable = false)
-    private Instant createdDate;
+    private Date createdDate;
 
     @Column(name = "closing_date")
-    private Instant closingDate;
+    private Date closingDate;
 
     @Column(name = "is_open")
     private Integer isOpen;
@@ -140,19 +140,19 @@ public class JobPost {
         this.contact = contact;
     }
 
-    public Instant getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Instant getClosingDate() {
+    public Date getClosingDate() {
         return closingDate;
     }
 
-    public void setClosingDate(Instant closingDate) {
+    public void setClosingDate(Date closingDate) {
         this.closingDate = closingDate;
     }
 
