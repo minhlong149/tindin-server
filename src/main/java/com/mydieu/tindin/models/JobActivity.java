@@ -12,16 +12,16 @@ public class JobActivity {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "job_id", nullable = false)
     private JobPost job;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applicant_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_apply", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_apply")
     private User userApply;
 
     @Column(name = "apply_date", nullable = false)

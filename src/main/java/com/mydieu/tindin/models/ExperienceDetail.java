@@ -39,7 +39,7 @@ public class ExperienceDetail {
     private Date endDate;
 
     @Column(name = "description")
-    private Integer description;
+    private String description;
 
     public Integer getId() {
         return id;
@@ -105,11 +105,11 @@ public class ExperienceDetail {
         this.endDate = endDate;
     }
 
-    public Integer getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Integer description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
