@@ -48,9 +48,4 @@ public class AutocompleteController {
     public String getExperienceLevels() {
         return autocompleteService.getExperienceLevels();
     }
-
-    @GetMapping("skills")
-    public String getSkills() {
-        return autocompleteService.getSkills();
-    }
 }

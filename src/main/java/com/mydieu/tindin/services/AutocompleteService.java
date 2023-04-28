@@ -10,7 +10,6 @@ public class AutocompleteService {
     private final IndustryRepository industryRepository;
     private final JobTypeRepository jobTypeRepository;
     private final ExperienceLevelRepository experienceLevelRepository;
-    private final SkillRepository skillRepository;
     private final DegreeRepository degreeRepository;
     private final MajorRepository majorRepository;
 
@@ -20,7 +19,6 @@ public class AutocompleteService {
             IndustryRepository industryRepository,
             JobTypeRepository jobTypeRepository,
             ExperienceLevelRepository experienceLevelRepository,
-            SkillRepository skillRepository,
             DegreeRepository degreeRepository,
             MajorRepository majorRepository
     ) {
@@ -29,16 +27,11 @@ public class AutocompleteService {
         this.industryRepository = industryRepository;
         this.jobTypeRepository = jobTypeRepository;
         this.experienceLevelRepository = experienceLevelRepository;
-        this.skillRepository = skillRepository;
         this.degreeRepository = degreeRepository;
         this.majorRepository = majorRepository;
     }
 
     public String getLocations() {
-        return null;
-    }
-
-    public String getSkills() {
         return null;
     }
 
