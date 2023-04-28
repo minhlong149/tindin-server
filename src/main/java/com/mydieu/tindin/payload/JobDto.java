@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * A DTO for the {@link com.mydieu.tindin.models.JobPost} entity
  */
-public record JobPostDto(
+public record JobDto(
         Integer id,
         RecruiterDto recruiter,
         String title,
