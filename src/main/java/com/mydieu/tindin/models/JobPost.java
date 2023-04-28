@@ -2,7 +2,7 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -18,54 +18,42 @@ public class JobPost {
     @JoinColumn(name = "recruiter_id", nullable = false)
     private Recruiter recruiter;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_title", nullable = false)
-    private JobTitle jobTitle;
+    @Column(name = "title", nullable = false, length = Integer.MAX_VALUE)
+    private String title;
 
-    @Column(name = "job_description", nullable = false, length = Integer.MAX_VALUE)
-    private String jobDescription;
+    @Column(name = "description", nullable = false, length = Integer.MAX_VALUE)
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_type", nullable = false)
+    @JoinColumn(name = "job_type_id", nullable = false)
     private JobType jobType;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "organization", nullable = false)
-    private Organization organization;
 
     @Column(name = "salary", nullable = false)
     private Integer salary;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "contact", nullable = false)
-    private Contact contact;
-
-    @Column(name = "created_date", nullable = false)
-    private Date createdDate;
+    @Column(name = "created_date")
+    private Instant createdDate;
 
     @Column(name = "closing_date")
-    private Date closingDate;
+    private Instant closingDate;
 
     @Column(name = "is_open")
     private Boolean isOpen;
 
     @OneToMany(mappedBy = "job")
-    private Set<JobActivity> jobActivities = new LinkedHashSet<>();
+    private Set<JobRequireMajor> jobRequireMajors = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "job")
-    private Set<SkillRequirement> skillRequirements = new LinkedHashSet<>();
+    private Set<JobRequireSkill> jobRequireSkills = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "job")
-    private Set<JobLocation> jobLocations = new LinkedHashSet<>();
+    private Set<JobRequireExperienceLevel> jobRequireExperienceLevels = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "job")
-    private Set<MajorRequirement> majorRequirements = new LinkedHashSet<>();
+    private Set<JobPostActivity> jobPostActivities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "job")
-    private Set<ExperienceRequirement> experienceRequirements = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "job")
-    private Set<DegreeRequirement> degreeRequirements = new LinkedHashSet<>();
+    private Set<JobRequireDegree> jobRequireDegrees = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -83,20 +71,20 @@ public class JobPost {
         this.recruiter = recruiter;
     }
 
-    public JobTitle getJobTitle() {
-        return jobTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setJobTitle(JobTitle jobTitle) {
-        this.jobTitle = jobTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getJobDescription() {
-        return jobDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setJobDescription(String jobDescription) {
-        this.jobDescription = jobDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public JobType getJobType() {
@@ -107,14 +95,6 @@ public class JobPost {
         this.jobType = jobType;
     }
 
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
-
     public Integer getSalary() {
         return salary;
     }
@@ -123,27 +103,19 @@ public class JobPost {
         this.salary = salary;
     }
 
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
-    public Date getCreatedDate() {
+    public Instant getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Instant createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Date getClosingDate() {
+    public Instant getClosingDate() {
         return closingDate;
     }
 
-    public void setClosingDate(Date closingDate) {
+    public void setClosingDate(Instant closingDate) {
         this.closingDate = closingDate;
     }
 
@@ -155,52 +127,44 @@ public class JobPost {
         this.isOpen = isOpen;
     }
 
-    public Set<JobActivity> getJobActivities() {
-        return jobActivities;
+    public Set<JobRequireMajor> getJobRequireMajors() {
+        return jobRequireMajors;
     }
 
-    public void setJobActivities(Set<JobActivity> jobActivities) {
-        this.jobActivities = jobActivities;
+    public void setJobRequireMajors(Set<JobRequireMajor> jobRequireMajors) {
+        this.jobRequireMajors = jobRequireMajors;
     }
 
-    public Set<SkillRequirement> getSkillRequirements() {
-        return skillRequirements;
+    public Set<JobRequireSkill> getJobRequireSkills() {
+        return jobRequireSkills;
     }
 
-    public void setSkillRequirements(Set<SkillRequirement> skillRequirements) {
-        this.skillRequirements = skillRequirements;
+    public void setJobRequireSkills(Set<JobRequireSkill> jobRequireSkills) {
+        this.jobRequireSkills = jobRequireSkills;
     }
 
-    public Set<JobLocation> getJobLocations() {
-        return jobLocations;
+    public Set<JobRequireExperienceLevel> getJobRequireExperienceLevels() {
+        return jobRequireExperienceLevels;
     }
 
-    public void setJobLocations(Set<JobLocation> jobLocations) {
-        this.jobLocations = jobLocations;
+    public void setJobRequireExperienceLevels(Set<JobRequireExperienceLevel> jobRequireExperienceLevels) {
+        this.jobRequireExperienceLevels = jobRequireExperienceLevels;
     }
 
-    public Set<MajorRequirement> getMajorRequirements() {
-        return majorRequirements;
+    public Set<JobPostActivity> getJobPostActivities() {
+        return jobPostActivities;
     }
 
-    public void setMajorRequirements(Set<MajorRequirement> majorRequirements) {
-        this.majorRequirements = majorRequirements;
+    public void setJobPostActivities(Set<JobPostActivity> jobPostActivities) {
+        this.jobPostActivities = jobPostActivities;
     }
 
-    public Set<ExperienceRequirement> getExperienceRequirements() {
-        return experienceRequirements;
+    public Set<JobRequireDegree> getJobRequireDegrees() {
+        return jobRequireDegrees;
     }
 
-    public void setExperienceRequirements(Set<ExperienceRequirement> experienceRequirements) {
-        this.experienceRequirements = experienceRequirements;
-    }
-
-    public Set<DegreeRequirement> getDegreeRequirements() {
-        return degreeRequirements;
-    }
-
-    public void setDegreeRequirements(Set<DegreeRequirement> degreeRequirements) {
-        this.degreeRequirements = degreeRequirements;
+    public void setJobRequireDegrees(Set<JobRequireDegree> jobRequireDegrees) {
+        this.jobRequireDegrees = jobRequireDegrees;
     }
 
 }

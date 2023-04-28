@@ -4,23 +4,24 @@ import com.mydieu.tindin.models.Gender;
 import com.mydieu.tindin.models.Role;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
 
 /**
  * A DTO for the {@link com.mydieu.tindin.models.User} entity
  */
 public record UserDto(
-        Integer id,
-        String username,
+        Integer accountId,
+        String accountUsername,
         Role role,
         String firstName,
         String lastName,
-        Date dateOfBirth,
         Gender gender,
+        LocalDate dateOfBirth,
+        Instant registrationDate,
         String profileUrl,
-        Date registrationDate,
-        String email,
         String phone,
+        String email,
         String website
 ) implements Serializable {
 }

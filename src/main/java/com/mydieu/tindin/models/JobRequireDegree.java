@@ -3,19 +3,19 @@ package com.mydieu.tindin.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "degree_requirement")
-public class DegreeRequirement {
+@Table(name = "job_require_degree")
+public class JobRequireDegree {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "job_id", nullable = false)
     private JobPost job;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "degree_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "degree_id", nullable = false)
     private Degree degree;
 
     public Integer getId() {

@@ -3,20 +3,19 @@ package com.mydieu.tindin.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "skills_detail")
-public class SkillsDetail {
+@Table(name = "applicant_skill")
+public class ApplicantSkill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applicant_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "skill_id")
-    private Skill skill;
+    @Column(name = "skill", length = Integer.MAX_VALUE)
+    private String skill;
 
     @Column(name = "skill_level")
     private Integer skillLevel;
@@ -37,11 +36,11 @@ public class SkillsDetail {
         this.applicant = applicant;
     }
 
-    public Skill getSkill() {
+    public String getSkill() {
         return skill;
     }
 
-    public void setSkill(Skill skill) {
+    public void setSkill(String skill) {
         this.skill = skill;
     }
 

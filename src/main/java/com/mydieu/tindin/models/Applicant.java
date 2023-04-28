@@ -9,51 +9,50 @@ import java.util.Set;
 @Table(name = "applicant")
 public class Applicant {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "account_id", nullable = false)
     private Integer id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
     @Column(name = "open_for_job")
     private Boolean openForJob;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_title_id")
-    private JobTitle jobTitle;
+    @Column(name = "title", length = Integer.MAX_VALUE)
+    private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "experience_level_id")
     private ExperienceLevel experienceLevel;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @JoinColumn(name = "perfer_location_id")
+    private Location perferLocation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_type_id")
-    private JobType jobType;
+    @JoinColumn(name = "perfer_job_type_id")
+    private JobType perferJobType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "industry_id")
-    private Industry industry;
+    @JoinColumn(name = "perfer_industry_id")
+    private Industry perferIndustry;
 
-    @Column(name = "salary")
-    private Integer salary;
-
-    @OneToMany(mappedBy = "applicant")
-    private Set<JobActivity> jobActivities = new LinkedHashSet<>();
+    @Column(name = "perfer_salary")
+    private Integer perferSalary;
 
     @OneToMany(mappedBy = "applicant")
-    private Set<SkillsDetail> skillsDetails = new LinkedHashSet<>();
+    private Set<ApplicantEducation> applicantEducations = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "applicant")
-    private Set<EducationDetail> educationDetails = new LinkedHashSet<>();
+    private Set<ApplicantSkill> applicantSkills = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "applicant")
-    private Set<ExperienceDetail> experienceDetails = new LinkedHashSet<>();
+    private Set<ApplicantExperience> applicantExperiences = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "applicant")
+    private Set<JobPostActivity> jobPostActivities = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -79,12 +78,12 @@ public class Applicant {
         this.openForJob = openForJob;
     }
 
-    public JobTitle getJobTitle() {
-        return jobTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setJobTitle(JobTitle jobTitle) {
-        this.jobTitle = jobTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public ExperienceLevel getExperienceLevel() {
@@ -95,68 +94,68 @@ public class Applicant {
         this.experienceLevel = experienceLevel;
     }
 
-    public Location getLocation() {
-        return location;
+    public Location getPerferLocation() {
+        return perferLocation;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setPerferLocation(Location perferLocation) {
+        this.perferLocation = perferLocation;
     }
 
-    public JobType getJobType() {
-        return jobType;
+    public JobType getPerferJobType() {
+        return perferJobType;
     }
 
-    public void setJobType(JobType jobType) {
-        this.jobType = jobType;
+    public void setPerferJobType(JobType perferJobType) {
+        this.perferJobType = perferJobType;
     }
 
-    public Industry getIndustry() {
-        return industry;
+    public Industry getPerferIndustry() {
+        return perferIndustry;
     }
 
-    public void setIndustry(Industry industry) {
-        this.industry = industry;
+    public void setPerferIndustry(Industry perferIndustry) {
+        this.perferIndustry = perferIndustry;
     }
 
-    public Integer getSalary() {
-        return salary;
+    public Integer getPerferSalary() {
+        return perferSalary;
     }
 
-    public void setSalary(Integer salary) {
-        this.salary = salary;
+    public void setPerferSalary(Integer perferSalary) {
+        this.perferSalary = perferSalary;
     }
 
-    public Set<JobActivity> getJobActivities() {
-        return jobActivities;
+    public Set<ApplicantEducation> getApplicantEducations() {
+        return applicantEducations;
     }
 
-    public void setJobActivities(Set<JobActivity> jobActivities) {
-        this.jobActivities = jobActivities;
+    public void setApplicantEducations(Set<ApplicantEducation> applicantEducations) {
+        this.applicantEducations = applicantEducations;
     }
 
-    public Set<SkillsDetail> getSkillsDetails() {
-        return skillsDetails;
+    public Set<ApplicantSkill> getApplicantSkills() {
+        return applicantSkills;
     }
 
-    public void setSkillsDetails(Set<SkillsDetail> skillsDetails) {
-        this.skillsDetails = skillsDetails;
+    public void setApplicantSkills(Set<ApplicantSkill> applicantSkills) {
+        this.applicantSkills = applicantSkills;
     }
 
-    public Set<EducationDetail> getEducationDetails() {
-        return educationDetails;
+    public Set<ApplicantExperience> getApplicantExperiences() {
+        return applicantExperiences;
     }
 
-    public void setEducationDetails(Set<EducationDetail> educationDetails) {
-        this.educationDetails = educationDetails;
+    public void setApplicantExperiences(Set<ApplicantExperience> applicantExperiences) {
+        this.applicantExperiences = applicantExperiences;
     }
 
-    public Set<ExperienceDetail> getExperienceDetails() {
-        return experienceDetails;
+    public Set<JobPostActivity> getJobPostActivities() {
+        return jobPostActivities;
     }
 
-    public void setExperienceDetails(Set<ExperienceDetail> experienceDetails) {
-        this.experienceDetails = experienceDetails;
+    public void setJobPostActivities(Set<JobPostActivity> jobPostActivities) {
+        this.jobPostActivities = jobPostActivities;
     }
 
 }
