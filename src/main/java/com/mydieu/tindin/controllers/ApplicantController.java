@@ -44,7 +44,6 @@ public class ApplicantController {
     @PostMapping("")
     public ResponseEntity<?> createApplicant(@RequestBody ApplicantDto applicantDto) {
         applicantService.createApplicant(applicantDto);
-        // TODO: Add token to response header
         return ResponseEntity.ok().build();
     }
 
