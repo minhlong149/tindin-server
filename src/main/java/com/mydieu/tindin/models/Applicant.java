@@ -28,19 +28,19 @@ public class Applicant {
     private ExperienceLevel experienceLevel;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "perfer_location_id")
-    private Location perferLocation;
+    @JoinColumn(name = "prefer_location_id")
+    private Location preferLocation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "perfer_job_type_id")
-    private JobType perferJobType;
+    @JoinColumn(name = "prefer_job_type_id")
+    private JobType preferJobType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "perfer_industry_id")
-    private Industry perferIndustry;
+    @JoinColumn(name = "prefer_industry_id")
+    private Industry preferIndustry;
 
-    @Column(name = "perfer_salary")
-    private Integer perferSalary;
+    @Column(name = "prefer_salary")
+    private Integer preferSalary;
 
     @OneToMany(mappedBy = "applicant")
     private Set<ApplicantEducation> applicantEducations = new LinkedHashSet<>();
@@ -94,36 +94,36 @@ public class Applicant {
         this.experienceLevel = experienceLevel;
     }
 
-    public Location getPerferLocation() {
-        return perferLocation;
+    public Location getPreferLocation() {
+        return preferLocation;
     }
 
-    public void setPerferLocation(Location perferLocation) {
-        this.perferLocation = perferLocation;
+    public void setPreferLocation(Location preferLocation) {
+        this.preferLocation = preferLocation;
     }
 
-    public JobType getPerferJobType() {
-        return perferJobType;
+    public JobType getPreferJobType() {
+        return preferJobType;
     }
 
-    public void setPerferJobType(JobType perferJobType) {
-        this.perferJobType = perferJobType;
+    public void setPreferJobType(JobType preferJobType) {
+        this.preferJobType = preferJobType;
     }
 
-    public Industry getPerferIndustry() {
-        return perferIndustry;
+    public Industry getPreferIndustry() {
+        return preferIndustry;
     }
 
-    public void setPerferIndustry(Industry perferIndustry) {
-        this.perferIndustry = perferIndustry;
+    public void setPreferIndustry(Industry preferIndustry) {
+        this.preferIndustry = preferIndustry;
     }
 
-    public Integer getPerferSalary() {
-        return perferSalary;
+    public Integer getPreferSalary() {
+        return preferSalary;
     }
 
-    public void setPerferSalary(Integer perferSalary) {
-        this.perferSalary = perferSalary;
+    public void setPreferSalary(Integer preferSalary) {
+        this.preferSalary = preferSalary;
     }
 
     public Set<ApplicantEducation> getApplicantEducations() {
