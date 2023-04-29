@@ -1,8 +1,10 @@
 package com.mydieu.tindin.services;
 
 import com.mydieu.tindin.exception.ResourceNotFoundException;
+import com.mydieu.tindin.models.JobPost;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.RecruiterDto;
+import com.mydieu.tindin.repositories.JobPostRepository;
 import com.mydieu.tindin.repositories.RecruiterRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.List;
 @Service
 public class RecruiterService {
     private final RecruiterRepository recruiterRepository;
+    private final JobPostRepository jobPostRepository;
 
-    public RecruiterService(RecruiterRepository recruiterRepository) {
+    public RecruiterService(RecruiterRepository recruiterRepository, JobPostRepository jobPostRepository) {
         this.recruiterRepository = recruiterRepository;
+        this.jobPostRepository = jobPostRepository;
     }
 
     public RecruiterDto findRecruiterById(Integer recruiterId) {
@@ -31,7 +35,12 @@ public class RecruiterService {
     }
 
     public List<JobDto> findJobsByRecruiterId(Integer recruiterId) {
-        // TODO: Find jobs posted by recruiter
-        return null;
+        List<JobPost> jobPosts = jobPostRepository.findByRecruiterId(recruiterId);
+
+        if (jobPosts.isEmpty()) {
+            throw new ResourceNotFoundException("No job found");
+        }
+
+        return jobPosts.stream().map(JobDto::fromJobPost).toList();
     }
 }
