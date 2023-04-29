@@ -1,5 +1,7 @@
 package com.mydieu.tindin.payload;
 
+import com.mydieu.tindin.models.Organization;
+
 import java.io.Serializable;
 
 /**
@@ -15,4 +17,16 @@ public record OrganizationDto(
         String phone,
         String website
 ) implements Serializable {
+    public static OrganizationDto fromOrganization(Organization organization) {
+        return new OrganizationDto(
+                organization.getId(),
+                organization.getName(),
+                organization.getDescription(),
+                organization.getIndustry().getName(),
+                organization.getLocation().getCity(),
+                organization.getEmail(),
+                organization.getPhone(),
+                organization.getWebsite()
+        );
+    }
 }
