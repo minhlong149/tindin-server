@@ -1,18 +1,19 @@
 package com.mydieu.tindin.payload;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
- * A DTO for the {@link com.mydieu.tindin.models.EducationDetail} entity
+ * A DTO for the {@link com.mydieu.tindin.models.ApplicantEducation} entity
  */
 public record EducationDto(
-        String degreeName,
-        String majorName,
-        OrganizationDto organization,
-        LocationDto location,
-        Date startDate,
-        Date completionDate,
-        String gpa
+        String universityName,
+        String degree,
+        String major,
+        String location,
+        LocalDate startDate,
+        LocalDate completionDate,
+        BigDecimal gpa
 ) implements Serializable {
 }

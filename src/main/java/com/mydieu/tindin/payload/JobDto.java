@@ -1,7 +1,7 @@
 package com.mydieu.tindin.payload;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Set;
 
 /**
@@ -10,21 +10,16 @@ import java.util.Set;
 public record JobDto(
         Integer id,
         RecruiterDto recruiter,
-        String jobTitle,
-        String jobDescription,
+        String title,
+        String description,
         String jobType,
-        OrganizationDto organization,
         Integer salary,
-        String email,
-        String phone,
-        String website,
-        Date createdDate,
-        Date closingDate,
+        Instant createdDate,
+        Instant closingDate,
         Boolean isOpen,
-        Set<LocationDto> jobLocations,
-        Set<SkillDto> skillsRequirement,
-        Set<String> experienceLevelsRequirement,
-        Set<String> majorsRequirement,
-        Set<String> degreesRequirement
+        Set<String> requireMajors,
+        Set<String> requireDegrees,
+        Set<String> requireExperienceLevels,
+        Set<SkillDto> requireSkills
 ) implements Serializable {
 }

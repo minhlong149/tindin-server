@@ -2,11 +2,11 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Entity
-@Table(name = "job_activity")
-public class JobActivity {
+@Table(name = "job_post_activity")
+public class JobPostActivity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -21,11 +21,11 @@ public class JobActivity {
     private Applicant applicant;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_apply")
-    private User userApply;
+    @JoinColumn(name = "user_applied_id")
+    private User userApplied;
 
-    @Column(name = "apply_date", nullable = false)
-    private Date applyDate;
+    @Column(name = "apply_date")
+    private Instant applyDate;
 
     public Integer getId() {
         return id;
@@ -51,19 +51,19 @@ public class JobActivity {
         this.applicant = applicant;
     }
 
-    public User getUserApply() {
-        return userApply;
+    public User getUserApplied() {
+        return userApplied;
     }
 
-    public void setUserApply(User userApply) {
-        this.userApply = userApply;
+    public void setUserApplied(User userApplied) {
+        this.userApplied = userApplied;
     }
 
-    public Date getApplyDate() {
+    public Instant getApplyDate() {
         return applyDate;
     }
 
-    public void setApplyDate(Date applyDate) {
+    public void setApplyDate(Instant applyDate) {
         this.applyDate = applyDate;
     }
 

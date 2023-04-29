@@ -1,18 +1,17 @@
 package com.mydieu.tindin.payload;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
- * A DTO for the {@link com.mydieu.tindin.models.ExperienceDetail} entity
+ * A DTO for the {@link com.mydieu.tindin.models.ApplicantExperience} entity
  */
 public record ExperienceDto(
-        String jobTitle,
-        String experienceLevel,
         OrganizationDto organization,
-        LocationDto location,
-        Date startDate,
-        Date endDate,
-        String description
+        String title,
+        String experienceLeve,
+        LocalDate startDate,
+        LocalDate endDate,
+        String accomplishment
 ) implements Serializable {
 }

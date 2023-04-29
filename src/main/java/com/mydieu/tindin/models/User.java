@@ -2,21 +2,22 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "\"user\"")
 public class User {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "account_id", nullable = false)
     private Integer id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "role", columnDefinition = "role not null", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -26,22 +27,25 @@ public class User {
     @Column(name = "last_name", length = Integer.MAX_VALUE)
     private String lastName;
 
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
-
-    @Column(name = "gender")
+    @Column(name = "gender", columnDefinition = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "profile_url", length = Integer.MAX_VALUE)
-    private String profileUrl;
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
 
     @Column(name = "registration_date")
-    private Date registrationDate;
+    private Instant registrationDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_id")
-    private Contact contact;
+    @Column(name = "profile_url", length = Integer.MAX_VALUE)
+    private String profileUrl;
+    @Column(name = "phone", length = Integer.MAX_VALUE)
+    private String phone;
+
+    @Column(name = "email", length = Integer.MAX_VALUE)
+    private String email;
+    @Column(name = "website", length = Integer.MAX_VALUE)
+    private String website;
 
     public Integer getId() {
         return id;
@@ -75,19 +79,19 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Date getRegistrationDate() {
+    public Instant getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
+    public void setRegistrationDate(Instant registrationDate) {
         this.registrationDate = registrationDate;
     }
 
@@ -99,12 +103,28 @@ public class User {
         this.profileUrl = profileUrl;
     }
 
-    public Contact getContact() {
-        return contact;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public Role getRole() {

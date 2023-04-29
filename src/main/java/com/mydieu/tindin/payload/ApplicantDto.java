@@ -8,16 +8,15 @@ import java.util.Set;
  */
 public record ApplicantDto(
         UserDto user,
-        LocationDto location,
         Boolean openForJob,
-        String jobTitle,
+        String title,
         String experienceLevel,
-        String jobType,
-        String industry,
-        Integer salary,
-        Set<SkillDto> skills,
+        String preferLocation,
+        String preferJobType,
+        String preferIndustry,
+        Integer preferSalary,
         Set<EducationDto> educations,
-        Set<ExperienceDto> experiences,
-        Set<JobDto> savedJobs
+        Set<SkillDto> skills,
+        Set<ExperienceDto> experiences
 ) implements Serializable {
 }

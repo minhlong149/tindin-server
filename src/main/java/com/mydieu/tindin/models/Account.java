@@ -16,9 +16,6 @@ public class Account {
     @Column(name = "password", nullable = false, length = Integer.MAX_VALUE)
     private String password;
 
-    @OneToOne(mappedBy = "account")
-    private User user;
-
     public Integer getId() {
         return id;
     }
@@ -41,14 +38,6 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
 }

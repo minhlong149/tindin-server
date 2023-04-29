@@ -10,11 +10,8 @@ public class Location {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "district", length = Integer.MAX_VALUE)
-    private String district;
-
-    @Column(name = "province", nullable = false, length = Integer.MAX_VALUE)
-    private String province;
+    @Column(name = "city", nullable = false, length = Integer.MAX_VALUE)
+    private String city;
 
     public Integer getId() {
         return id;
@@ -24,20 +21,12 @@ public class Location {
         this.id = id;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getCity() {
+        return city;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
+    public void setCity(String city) {
+        this.city = city;
     }
 
 }

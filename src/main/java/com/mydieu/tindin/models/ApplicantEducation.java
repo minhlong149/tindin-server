@@ -2,19 +2,23 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "education_detail")
-public class EducationDetail {
+@Table(name = "applicant_education")
+public class ApplicantEducation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applicant_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "applicant_id", nullable = false)
     private Applicant applicant;
+
+    @Column(name = "university_name", nullable = false, length = Integer.MAX_VALUE)
+    private String universityName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "degree_id")
@@ -25,21 +29,17 @@ public class EducationDetail {
     private Major major;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id")
-    private Organization organization;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location")
+    @JoinColumn(name = "location_id")
     private Location location;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "completion_date")
-    private Date completionDate;
+    private LocalDate completionDate;
 
     @Column(name = "gpa")
-    private Integer gpa;
+    private BigDecimal gpa;
 
     public Integer getId() {
         return id;
@@ -55,6 +55,14 @@ public class EducationDetail {
 
     public void setApplicant(Applicant applicant) {
         this.applicant = applicant;
+    }
+
+    public String getUniversityName() {
+        return universityName;
+    }
+
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
     }
 
     public Degree getDegree() {
@@ -73,14 +81,6 @@ public class EducationDetail {
         this.major = major;
     }
 
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
-
     public Location getLocation() {
         return location;
     }
@@ -89,27 +89,27 @@ public class EducationDetail {
         this.location = location;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getCompletionDate() {
+    public LocalDate getCompletionDate() {
         return completionDate;
     }
 
-    public void setCompletionDate(Date completionDate) {
+    public void setCompletionDate(LocalDate completionDate) {
         this.completionDate = completionDate;
     }
 
-    public Integer getGpa() {
+    public BigDecimal getGpa() {
         return gpa;
     }
 
-    public void setGpa(Integer gpa) {
+    public void setGpa(BigDecimal gpa) {
         this.gpa = gpa;
     }
 

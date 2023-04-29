@@ -31,7 +31,6 @@ public class RecruiterController {
     @PostMapping("")
     public ResponseEntity<?> createRecruiter(@RequestBody RecruiterDto recruiterDto) {
         recruiterService.createRecruiter(recruiterDto);
-        // TODO: Add token to response header
         return ResponseEntity.ok().build();
     }
 

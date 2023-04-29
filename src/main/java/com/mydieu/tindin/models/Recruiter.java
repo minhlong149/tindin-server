@@ -9,16 +9,16 @@ import java.util.Set;
 @Table(name = "recruiter")
 public class Recruiter {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "account_id", nullable = false)
     private Integer id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "organization", nullable = false)
+    @JoinColumn(name = "organization_id", nullable = false)
     private Organization organization;
 
     @OneToMany(mappedBy = "recruiter")

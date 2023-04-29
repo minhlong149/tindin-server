@@ -2,9 +2,6 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "organization")
 public class Organization {
@@ -23,15 +20,18 @@ public class Organization {
     @JoinColumn(name = "industry_id")
     private Industry industry;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_id")
-    private Contact contact;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
 
-    @OneToMany(mappedBy = "organization")
-    private Set<OrganizationLocation> organizationLocations = new LinkedHashSet<>();
+    @Column(name = "email", length = Integer.MAX_VALUE)
+    private String email;
 
-    @OneToMany(mappedBy = "organization")
-    private Set<JobPost> jobPosts = new LinkedHashSet<>();
+    @Column(name = "phone", length = Integer.MAX_VALUE)
+    private String phone;
+
+    @Column(name = "website", length = Integer.MAX_VALUE)
+    private String website;
 
     public Integer getId() {
         return id;
@@ -65,28 +65,36 @@ public class Organization {
         this.industry = industry;
     }
 
-    public Contact getContact() {
-        return contact;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    public Set<OrganizationLocation> getOrganizationLocations() {
-        return organizationLocations;
+    public String getEmail() {
+        return email;
     }
 
-    public void setOrganizationLocations(Set<OrganizationLocation> organizationLocations) {
-        this.organizationLocations = organizationLocations;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Set<JobPost> getJobPosts() {
-        return jobPosts;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setJobPosts(Set<JobPost> jobPosts) {
-        this.jobPosts = jobPosts;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
 }
