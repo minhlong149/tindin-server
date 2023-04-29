@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/recruiters")
@@ -22,10 +23,13 @@ public class RecruiterController {
         return recruiterService.findRecruiterById(recruiterId);
     }
 
-    // get list of jobs posted by recruiter
     @GetMapping("{recruiterId}/jobs")
-    public List<JobDto> getJobsByRecruiterId(@PathVariable Integer recruiterId) {
-        return recruiterService.findJobsByRecruiterId(recruiterId);
+    public List<JobDto> getJobsByRecruiterId(
+            @PathVariable Integer recruiterId,
+            @RequestParam Optional<Integer> pageNumber,
+            @RequestParam Optional<Integer> pageSize
+    ) {
+        return recruiterService.findJobsByRecruiterId(recruiterId, pageNumber, pageSize);
     }
 
     @PostMapping("")
