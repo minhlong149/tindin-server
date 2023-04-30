@@ -4,4 +4,5 @@ import com.mydieu.tindin.models.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
+    Boolean existsByUsername(String username);
 }

@@ -4,8 +4,8 @@ import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.models.JobPost;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.RecruiterDto;
-import com.mydieu.tindin.repositories.JobPostRepository;
-import com.mydieu.tindin.repositories.RecruiterRepository;
+import com.mydieu.tindin.payload.RecruiterRegistration;
+import com.mydieu.tindin.repositories.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,16 @@ import java.util.Optional;
 public class RecruiterService {
     private final RecruiterRepository recruiterRepository;
     private final JobPostRepository jobPostRepository;
+    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
+    private final OrganizationRepository organizationRepository;
 
-    public RecruiterService(RecruiterRepository recruiterRepository, JobPostRepository jobPostRepository) {
+    public RecruiterService(RecruiterRepository recruiterRepository, JobPostRepository jobPostRepository, AccountRepository accountRepository, UserRepository userRepository, OrganizationRepository organizationRepository) {
         this.recruiterRepository = recruiterRepository;
         this.jobPostRepository = jobPostRepository;
+        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
+        this.organizationRepository = organizationRepository;
     }
 
     public RecruiterDto findRecruiterById(Integer recruiterId) {
@@ -29,8 +35,32 @@ public class RecruiterService {
                 .orElseThrow(() -> new ResourceNotFoundException("Recruiter not found"));
     }
 
-    public void createRecruiter(RecruiterDto recruiterDto) {
-        // TODO: Create recruiter
+    public void createRecruiter(RecruiterRegistration recruiterRegistration) {
+        // String username = recruiterRegistration.username();
+        // Boolean usernameIsTaken = accountRepository.existsByUsername(username);
+        // if (usernameIsTaken) {
+        //     throw new IllegalArgumentException("Username is already taken");
+        // }
+        //
+        // System.out.println("> Username " + username + " is not taken");
+        //
+        // String password = recruiterRegistration.password();
+        // Account newAccount = accountRepository.save(new Account(username, password));
+        //
+        // System.out.println("> Account created");
+        //
+        // String firstName = recruiterRegistration.firstName();
+        // User newUser = userRepository.save(new User(newAccount, Role.RECRUITER, firstName));
+        //
+        // System.out.println("> User created");
+        //
+        // Integer organizationId = recruiterRegistration.organizationId();
+        // Organization organization = organizationRepository.findById(organizationId)
+        //         .orElseThrow(() -> new ResourceNotFoundException("Organization not found"));
+        //
+        // System.out.println("> Found organization" + organization.getName());
+        //
+        // recruiterRepository.save(new Recruiter(newUser, organization));
     }
 
     public void updateRecruiter(Integer recruiterId, RecruiterDto recruiterDto) {

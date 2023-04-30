@@ -2,6 +2,7 @@ package com.mydieu.tindin.controllers;
 
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.RecruiterDto;
+import com.mydieu.tindin.payload.RecruiterRegistration;
 import com.mydieu.tindin.services.RecruiterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,8 @@ public class RecruiterController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createRecruiter(@RequestBody RecruiterDto recruiterDto) {
-        recruiterService.createRecruiter(recruiterDto);
+    public ResponseEntity<?> createRecruiter(@RequestBody RecruiterRegistration recruiterRegistration) {
+        recruiterService.createRecruiter(recruiterRegistration);
         return ResponseEntity.ok().build();
     }
 

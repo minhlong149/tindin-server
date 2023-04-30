@@ -47,6 +47,28 @@ public class User {
     @Column(name = "website", length = Integer.MAX_VALUE)
     private String website;
 
+    public User(Account account, Role role, String firstName) {
+        this.id = account.getId();
+        this.account = account;
+        this.role = role;
+        this.firstName = firstName;
+    }
+
+    public User(Integer id, Account account, Role role, String firstName, String lastName, Gender gender, LocalDate dateOfBirth, Instant registrationDate, String profileUrl, String phone, String email, String website) {
+        this.id = id;
+        this.account = account;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.registrationDate = registrationDate;
+        this.profileUrl = profileUrl;
+        this.phone = phone;
+        this.email = email;
+        this.website = website;
+    }
+
     public Integer getId() {
         return id;
     }
