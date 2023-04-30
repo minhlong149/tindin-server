@@ -21,4 +21,17 @@ public class DefaultExceptionHandler {
                 exception.getMessage()
         );
     }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError handleDuplicateResourceException(
+            DuplicateResourceException exception,
+            HttpServletRequest request
+    ) {
+        return new ApiError(
+                request.getRequestURI(),
+                HttpStatus.CONFLICT.value(),
+                exception.getMessage()
+        );
+    }
 }

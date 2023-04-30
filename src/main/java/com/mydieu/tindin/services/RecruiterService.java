@@ -1,7 +1,8 @@
 package com.mydieu.tindin.services;
 
+import com.mydieu.tindin.exception.DuplicateResourceException;
 import com.mydieu.tindin.exception.ResourceNotFoundException;
-import com.mydieu.tindin.models.JobPost;
+import com.mydieu.tindin.models.*;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.RecruiterDto;
 import com.mydieu.tindin.payload.RecruiterRegistration;
@@ -35,32 +36,28 @@ public class RecruiterService {
                 .orElseThrow(() -> new ResourceNotFoundException("Recruiter not found"));
     }
 
-    public void createRecruiter(RecruiterRegistration recruiterRegistration) {
-        // String username = recruiterRegistration.username();
-        // Boolean usernameIsTaken = accountRepository.existsByUsername(username);
-        // if (usernameIsTaken) {
-        //     throw new IllegalArgumentException("Username is already taken");
-        // }
-        //
-        // System.out.println("> Username " + username + " is not taken");
-        //
-        // String password = recruiterRegistration.password();
-        // Account newAccount = accountRepository.save(new Account(username, password));
-        //
-        // System.out.println("> Account created");
-        //
-        // String firstName = recruiterRegistration.firstName();
-        // User newUser = userRepository.save(new User(newAccount, Role.RECRUITER, firstName));
-        //
-        // System.out.println("> User created");
-        //
-        // Integer organizationId = recruiterRegistration.organizationId();
-        // Organization organization = organizationRepository.findById(organizationId)
-        //         .orElseThrow(() -> new ResourceNotFoundException("Organization not found"));
-        //
-        // System.out.println("> Found organization" + organization.getName());
-        //
-        // recruiterRepository.save(new Recruiter(newUser, organization));
+    public RecruiterDto createRecruiter(RecruiterRegistration recruiterRegistration) {
+        String username = recruiterRegistration.username();
+        String password = recruiterRegistration.password();
+        String firstName = recruiterRegistration.firstName();
+        Integer organizationId = recruiterRegistration.organizationId();
+
+        Boolean usernameIsTaken = accountRepository.existsByUsername(username);
+        if (usernameIsTaken) {
+            throw new DuplicateResourceException("Username is already taken");
+        }
+
+        // TODO: check if password and firstName exist
+
+        Organization organization = organizationRepository.findById(organizationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Organization not found"));
+
+        Account newAccount = new Account(username, password);
+        User newUser = new User(newAccount, Role.RECRUITER, firstName);
+        Recruiter newRecruiter = new Recruiter(newUser, organization);
+        recruiterRepository.save(newRecruiter);
+
+        return RecruiterDto.fromRecruiter(newRecruiter);
     }
 
     public void updateRecruiter(Integer recruiterId, RecruiterDto recruiterDto) {

@@ -4,7 +4,7 @@ import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.RecruiterDto;
 import com.mydieu.tindin.payload.RecruiterRegistration;
 import com.mydieu.tindin.services.RecruiterService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,9 +34,9 @@ public class RecruiterController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createRecruiter(@RequestBody RecruiterRegistration recruiterRegistration) {
-        recruiterService.createRecruiter(recruiterRegistration);
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public RecruiterDto createRecruiter(@RequestBody RecruiterRegistration recruiterRegistration) {
+        return recruiterService.createRecruiter(recruiterRegistration);
     }
 
     @PutMapping("{recruiterId}")

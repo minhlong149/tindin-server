@@ -16,6 +16,9 @@ public class Account {
     @Column(name = "password", nullable = false, length = Integer.MAX_VALUE)
     private String password;
 
+    public Account() {
+    }
+
     public Account(String username, String password) {
         this.username = username;
         this.password = password;

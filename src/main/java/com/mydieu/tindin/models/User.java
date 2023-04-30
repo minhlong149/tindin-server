@@ -1,6 +1,7 @@
 package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -19,6 +20,10 @@ public class User {
 
     @Column(name = "role", columnDefinition = "role not null", nullable = false)
     @Enumerated(EnumType.STRING)
+    @ColumnTransformer(
+            read = "role::text",
+            write = "?::role"
+    )
     private Role role;
 
     @Column(name = "first_name", nullable = false, length = Integer.MAX_VALUE)
@@ -29,6 +34,10 @@ public class User {
 
     @Column(name = "gender", columnDefinition = "gender")
     @Enumerated(EnumType.STRING)
+    @ColumnTransformer(
+            read = "gender::text",
+            write = "?::gender"
+    )
     private Gender gender;
 
     @Column(name = "date_of_birth")
@@ -47,26 +56,14 @@ public class User {
     @Column(name = "website", length = Integer.MAX_VALUE)
     private String website;
 
-    public User(Account account, Role role, String firstName) {
-        this.id = account.getId();
-        this.account = account;
-        this.role = role;
-        this.firstName = firstName;
+    public User() {
     }
 
-    public User(Integer id, Account account, Role role, String firstName, String lastName, Gender gender, LocalDate dateOfBirth, Instant registrationDate, String profileUrl, String phone, String email, String website) {
-        this.id = id;
-        this.account = account;
-        this.role = role;
+    public User(Account newAccount, Role recruiter, String firstName) {
+        this.id = newAccount.getId();
+        this.account = newAccount;
+        this.role = recruiter;
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.registrationDate = registrationDate;
-        this.profileUrl = profileUrl;
-        this.phone = phone;
-        this.email = email;
-        this.website = website;
     }
 
     public Integer getId() {
