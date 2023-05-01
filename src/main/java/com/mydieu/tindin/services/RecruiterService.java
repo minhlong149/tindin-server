@@ -1,6 +1,7 @@
 package com.mydieu.tindin.services;
 
 import com.mydieu.tindin.exception.DuplicateResourceException;
+import com.mydieu.tindin.exception.InvalidRequestException;
 import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.models.*;
 import com.mydieu.tindin.payload.JobDto;
@@ -36,27 +37,45 @@ public class RecruiterService {
                 .orElseThrow(() -> new ResourceNotFoundException("Recruiter not found"));
     }
 
-    public RecruiterDto createRecruiter(RecruiterRegistration recruiterRegistration) {
-        String username = recruiterRegistration.username();
-        String password = recruiterRegistration.password();
-        String firstName = recruiterRegistration.firstName();
-        Integer organizationId = recruiterRegistration.organizationId();
+    public RecruiterDto createRecruiter(RecruiterRegistration recruiter) {
+        if (recruiter.username() == null || recruiter.username().isBlank()) {
+            throw new InvalidRequestException("Username is required");
+        }
 
-        Boolean usernameIsTaken = accountRepository.existsByUsername(username);
+        if (recruiter.password() == null || recruiter.password().isBlank()) {
+            throw new InvalidRequestException("Password is required");
+        }
+
+        if (recruiter.firstName() == null || recruiter.firstName().isBlank()) {
+            throw new InvalidRequestException("First name is required");
+        }
+
+        if (recruiter.organizationId() == null) {
+            throw new InvalidRequestException("Organization ID is required");
+        }
+
+        Boolean usernameIsTaken = accountRepository.existsByUsername(recruiter.username());
         if (usernameIsTaken) {
             throw new DuplicateResourceException("Username is already taken");
         }
 
-        // TODO: check if password and firstName exist
+        Organization organization = organizationRepository.findById(recruiter.organizationId())
+                .orElseThrow(() -> new InvalidRequestException("Organization ID is invalid"));
 
-        Organization organization = organizationRepository.findById(organizationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Organization not found"));
-
-        Account newAccount = new Account(username, password);
-        User newUser = new User(newAccount, Role.RECRUITER, firstName);
+        User newUser = new User(
+                new Account(recruiter.username(), recruiter.password()),
+                Role.RECRUITER,
+                recruiter.firstName(),
+                recruiter.lastName(),
+                recruiter.gender(),
+                recruiter.dateOfBirth(),
+                recruiter.profileUrl(),
+                recruiter.email(),
+                recruiter.phone(),
+                recruiter.website()
+        );
         Recruiter newRecruiter = new Recruiter(newUser, organization);
         recruiterRepository.save(newRecruiter);
-
         return RecruiterDto.fromRecruiter(newRecruiter);
     }
 

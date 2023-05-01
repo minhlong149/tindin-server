@@ -2,6 +2,7 @@ package com.mydieu.tindin.models;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -43,7 +44,8 @@ public class User {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "registration_date")
+    @Column(name = "registration_date", columnDefinition = "timestamp default now()", insertable = false, updatable = false)
+    @CreationTimestamp
     private Instant registrationDate;
 
     @Column(name = "profile_url", length = Integer.MAX_VALUE)
@@ -64,6 +66,20 @@ public class User {
         this.account = newAccount;
         this.role = recruiter;
         this.firstName = firstName;
+    }
+
+    public User(Account account, Role role, String firstName, String lastName, Gender gender, LocalDate dateOfBirth, String profileUrl, String phone, String email, String website) {
+        this.id = account.getId();
+        this.account = account;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.profileUrl = profileUrl;
+        this.phone = phone;
+        this.email = email;
+        this.website = website;
     }
 
     public Integer getId() {
