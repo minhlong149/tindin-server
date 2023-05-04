@@ -2,6 +2,7 @@ package com.mydieu.tindin.payload;
 
 import com.mydieu.tindin.models.Gender;
 import com.mydieu.tindin.models.Role;
+import com.mydieu.tindin.models.User;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -24,4 +25,20 @@ public record UserDto(
         String email,
         String website
 ) implements Serializable {
+    public static UserDto fromUser(User user) {
+        return new UserDto(
+                user.getAccount().getId(),
+                user.getAccount().getUsername(),
+                user.getRole(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getGender(),
+                user.getDateOfBirth(),
+                user.getRegistrationDate(),
+                user.getProfileUrl(),
+                user.getPhone(),
+                user.getEmail(),
+                user.getWebsite()
+        );
+    }
 }

@@ -24,6 +24,15 @@ public class Recruiter {
     @OneToMany(mappedBy = "recruiter")
     private Set<JobPost> jobPosts = new LinkedHashSet<>();
 
+    public Recruiter() {
+    }
+
+    public Recruiter(User user, Organization organization) {
+        this.id = user.getId();
+        this.user = user;
+        this.organization = organization;
+    }
+
     public Integer getId() {
         return id;
     }
