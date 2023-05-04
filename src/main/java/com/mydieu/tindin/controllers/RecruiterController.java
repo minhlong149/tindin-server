@@ -40,7 +40,7 @@ public class RecruiterController {
     }
 
     @PutMapping("{recruiterId}")
-    public void updateRecruiter(@PathVariable Integer recruiterId, @RequestBody RecruiterDto recruiterDto) {
-        recruiterService.updateRecruiter(recruiterId, recruiterDto);
+    public RecruiterDto updateRecruiter(@PathVariable Integer recruiterId, @RequestBody RecruiterRegistration recruiterRegistration) {
+        return recruiterService.updateRecruiter(recruiterId, recruiterRegistration);
     }
 }

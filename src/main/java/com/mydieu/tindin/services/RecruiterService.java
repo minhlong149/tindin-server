@@ -7,7 +7,10 @@ import com.mydieu.tindin.models.*;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.RecruiterDto;
 import com.mydieu.tindin.payload.RecruiterRegistration;
-import com.mydieu.tindin.repositories.*;
+import com.mydieu.tindin.repositories.AccountRepository;
+import com.mydieu.tindin.repositories.JobPostRepository;
+import com.mydieu.tindin.repositories.OrganizationRepository;
+import com.mydieu.tindin.repositories.RecruiterRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,14 +23,12 @@ public class RecruiterService {
     private final RecruiterRepository recruiterRepository;
     private final JobPostRepository jobPostRepository;
     private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
     private final OrganizationRepository organizationRepository;
 
-    public RecruiterService(RecruiterRepository recruiterRepository, JobPostRepository jobPostRepository, AccountRepository accountRepository, UserRepository userRepository, OrganizationRepository organizationRepository) {
+    public RecruiterService(RecruiterRepository recruiterRepository, JobPostRepository jobPostRepository, AccountRepository accountRepository, OrganizationRepository organizationRepository) {
         this.recruiterRepository = recruiterRepository;
         this.jobPostRepository = jobPostRepository;
         this.accountRepository = accountRepository;
-        this.userRepository = userRepository;
         this.organizationRepository = organizationRepository;
     }
 
@@ -70,8 +71,8 @@ public class RecruiterService {
                 recruiter.gender(),
                 recruiter.dateOfBirth(),
                 recruiter.profileUrl(),
-                recruiter.email(),
                 recruiter.phone(),
+                recruiter.email(),
                 recruiter.website()
         );
         Recruiter newRecruiter = new Recruiter(newUser, organization);
@@ -79,8 +80,62 @@ public class RecruiterService {
         return RecruiterDto.fromRecruiter(newRecruiter);
     }
 
-    public void updateRecruiter(Integer recruiterId, RecruiterDto recruiterDto) {
-        // TODO: Update recruiter info by id
+    public RecruiterDto updateRecruiter(Integer recruiterId, RecruiterRegistration newRecruiter) {
+        Recruiter recruiter = recruiterRepository.findById(recruiterId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recruiter not found"));
+
+        if (newRecruiter.username() != null && !newRecruiter.username().isBlank()) {
+            Boolean usernameIsTaken = accountRepository.existsByUsername(newRecruiter.username());
+            if (usernameIsTaken) {
+                throw new DuplicateResourceException("Username is already taken");
+            }
+            recruiter.getUser().getAccount().setUsername(newRecruiter.username());
+        }
+
+        if (newRecruiter.password() != null && !newRecruiter.password().isBlank()) {
+            recruiter.getUser().getAccount().setPassword(newRecruiter.password());
+        }
+
+        if (newRecruiter.firstName() != null && !newRecruiter.firstName().isBlank()) {
+            recruiter.getUser().setFirstName(newRecruiter.firstName());
+        }
+
+        if (newRecruiter.lastName() != null && !newRecruiter.lastName().isBlank()) {
+            recruiter.getUser().setLastName(newRecruiter.lastName());
+        }
+
+        if (newRecruiter.gender() != null) {
+            recruiter.getUser().setGender(newRecruiter.gender());
+        }
+
+        if (newRecruiter.dateOfBirth() != null) {
+            recruiter.getUser().setDateOfBirth(newRecruiter.dateOfBirth());
+        }
+
+        if (newRecruiter.profileUrl() != null && !newRecruiter.profileUrl().isBlank()) {
+            recruiter.getUser().setProfileUrl(newRecruiter.profileUrl());
+        }
+
+        if (newRecruiter.phone() != null && !newRecruiter.phone().isBlank()) {
+            recruiter.getUser().setPhone(newRecruiter.phone());
+        }
+
+        if (newRecruiter.email() != null && !newRecruiter.email().isBlank()) {
+            recruiter.getUser().setEmail(newRecruiter.email());
+        }
+
+        if (newRecruiter.website() != null && !newRecruiter.website().isBlank()) {
+            recruiter.getUser().setWebsite(newRecruiter.website());
+        }
+
+        if (newRecruiter.organizationId() != null) {
+            Organization organization = organizationRepository.findById(newRecruiter.organizationId())
+                    .orElseThrow(() -> new InvalidRequestException("Organization ID is invalid"));
+            recruiter.setOrganization(organization);
+        }
+
+        recruiterRepository.save(recruiter);
+        return RecruiterDto.fromRecruiter(recruiter);
     }
 
     public List<JobDto> findJobsByRecruiterId(Integer recruiterId, Optional<Integer> pageNumber, Optional<Integer> pageSize) {
