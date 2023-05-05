@@ -1,5 +1,6 @@
 package com.mydieu.tindin.payload;
 
+import com.mydieu.tindin.models.ApplicantSkill;
 import com.mydieu.tindin.models.JobRequireSkill;
 
 import java.io.Serializable;
@@ -15,6 +16,13 @@ public record SkillDto(
         return new SkillDto(
                 jobRequireSkills.getSkill(),
                 jobRequireSkills.getSkillLevel()
+        );
+    }
+
+    public static SkillDto fromApplicantSkill(ApplicantSkill applicantSkill) {
+        return new SkillDto(
+                applicantSkill.getSkill(),
+                applicantSkill.getSkillLevel()
         );
     }
 }

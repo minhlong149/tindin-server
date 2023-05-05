@@ -13,6 +13,13 @@ public class ExperienceLevel {
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
+    public ExperienceLevel() {
+    }
+
+    public ExperienceLevel(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

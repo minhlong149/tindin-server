@@ -1,5 +1,6 @@
 package com.mydieu.tindin.services;
 
+import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.repositories.ApplicantRepository;
@@ -29,8 +30,9 @@ public class ApplicantService {
     }
 
     public ApplicantDto findApplicantById(Integer applicantId) {
-        // TODO: Return applicant with the given ID
-        return null;
+        return applicantRepository.findById(applicantId)
+                .map(ApplicantDto::fromApplicant)
+                .orElseThrow(() -> new ResourceNotFoundException("Applicant not found"));
     }
 
     public void createApplicant(ApplicantDto applicantDto) {
