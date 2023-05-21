@@ -20,6 +20,14 @@ public class ApplicantSkill {
     @Column(name = "skill_level")
     private Integer skillLevel;
 
+    public ApplicantSkill() {
+    }
+
+    public ApplicantSkill(Applicant applicant, String skill) {
+        this.applicant = applicant;
+        this.skill = skill;
+    }
+
     public Integer getId() {
         return id;
     }

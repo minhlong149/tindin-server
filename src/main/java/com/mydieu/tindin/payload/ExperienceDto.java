@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public record ExperienceDto(
         OrganizationDto organization,
         String title,
-        String experienceLeve,
+        String experienceLevel,
         LocalDate startDate,
         LocalDate endDate,
         String accomplishment

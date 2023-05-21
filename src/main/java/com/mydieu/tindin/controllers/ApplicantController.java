@@ -1,9 +1,10 @@
 package com.mydieu.tindin.controllers;
 
 import com.mydieu.tindin.payload.ApplicantDto;
+import com.mydieu.tindin.payload.ApplicantRegistration;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.services.ApplicantService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,9 +43,9 @@ public class ApplicantController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createApplicant(@RequestBody ApplicantDto applicantDto) {
-        applicantService.createApplicant(applicantDto);
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApplicantDto createApplicant(@RequestBody ApplicantRegistration newApplicant) {
+        return applicantService.createApplicant(newApplicant);
     }
 
     @PutMapping("{applicantId}")

@@ -21,9 +21,9 @@ public record EducationDto(
     public static EducationDto fromApplicantEducation(ApplicantEducation applicantEducation) {
         return new EducationDto(
                 applicantEducation.getUniversityName(),
-                applicantEducation.getDegree().getName(),
-                applicantEducation.getMajor().getName(),
-                applicantEducation.getLocation().getCity(),
+                applicantEducation.getDegree() != null ? applicantEducation.getDegree().getName() : null,
+                applicantEducation.getMajor() != null ? applicantEducation.getMajor().getName() : null,
+                applicantEducation.getLocation() != null ? applicantEducation.getLocation().getCity() : null,
                 applicantEducation.getStartDate(),
                 applicantEducation.getCompletionDate(),
                 applicantEducation.getGpa()

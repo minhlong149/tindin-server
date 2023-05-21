@@ -27,10 +27,10 @@ public record ApplicantDto(
                 UserDto.fromUser(applicant.getUser()),
                 applicant.getOpenForJob(),
                 applicant.getTitle(),
-                applicant.getExperienceLevel().getName(),
-                applicant.getPreferLocation().getCity(),
-                applicant.getPreferJobType().getName(),
-                applicant.getPreferIndustry().getName(),
+                applicant.getExperienceLevel() == null ? null : applicant.getExperienceLevel().getName(),
+                applicant.getPreferLocation() == null ? null : applicant.getPreferLocation().getCity(),
+                applicant.getPreferJobType() == null ? null : applicant.getPreferJobType().getName(),
+                applicant.getPreferIndustry() == null ? null : applicant.getPreferIndustry().getName(),
                 applicant.getPreferSalary(),
                 applicant.getApplicantEducations()
                         .stream().map(EducationDto::fromApplicantEducation)
