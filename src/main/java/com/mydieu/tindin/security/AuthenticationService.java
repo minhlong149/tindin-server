@@ -1,76 +1,57 @@
 package com.mydieu.tindin.security;
 
 import com.mydieu.tindin.repositories.UserRepository;
-
-import com.mydieu.tindin.models.Account;
-import com.mydieu.tindin.models.User;
-import com.mydieu.tindin.repositories.AccountRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
+
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository userRepository;
-    private final AccountRepository accountRepository;
+    private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
-    public AuthenticationService(UserRepository userRepository, AccountRepository accountRepository,
-                                 PasswordEncoder passwordEncoder, JwtService jwtService,
-                                 AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
-        this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
-    }
-
     public AuthenticationResponse register(RegisteredRequest request) {
-        // var user = new User();
-        // user.setFirstName(request.getFirstName());
-        // user.setLastName(request.getLastName());
-        // user.setEmail(request.getEmail());
-        // user.setPassword(passwordEncoder.encode(request.getPassword()));
-        // user.setRole(request.getRole());
-        // repository.save(user);
-        // var jwtToken = jwtService.generateToken(user);
-        // return new AuthenticationResponse(jwtToken);
+//        var user = User.builder()
+//                .firstName(request.getFirstname())
+//                .lastName(request.getLastname())
+//                .email(request.getEmail())
+//                .password(passwordEncoder.encode(request.getPassword()))
+//                .role(request.getRole())
+//                .build();
+//        repository.save(user);
+//        var jwtToken = jwtService.generateToken(user);
+//        return AuthenticationResponse.builder()
+//                .token(jwtToken)
+//                .build();
         return null;
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-
-//        // Authentication successful, generate JWT token
-//        Account account = accountRepository.findByUsername(request.getUsername())
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        User user = userRepository.findById(account.getId())
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        var jwtToken = jwtService.generateToken(account);
-//        Integer userId = user.getId();
-//        String role = user.getRole().name();
-//        return new AuthenticationResponse(jwtToken, userId, role);
-        Account account = accountRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        User user = userRepository.findById(account.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Generate JWT token for the authenticated user
-        String token = jwtService.generateToken(account);
-
-        // Create the AuthenticationResponse with the token, userId, and role
-        AuthenticationResponse response = new AuthenticationResponse(token, user.getId(), user.getRole().name());
-
-        // Return the AuthenticationResponse
-        return response;
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getUsername(),
+//                        request.getPassword()
+//                )
+//        );
+//        var user = repository.findByUsername(request.getUsername())
+//                .orElseThrow();
+//        var jwtToken = jwtService.generateToken(user);
+//        return AuthenticationResponse.builder()
+////                .token(jwtToken)
+////                .build();
+        return null;
     }
 }

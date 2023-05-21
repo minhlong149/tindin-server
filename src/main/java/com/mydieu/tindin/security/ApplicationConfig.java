@@ -1,6 +1,7 @@
 package com.mydieu.tindin.security;
 
-import com.mydieu.tindin.repositories.AccountRepository;
+import com.mydieu.tindin.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,19 +14,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final AccountRepository repository;
-
-    public ApplicationConfig(AccountRepository repository) {
-        this.repository = repository;
-    }
+    private final UserRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//        return null;
+//        return username -> repository.findByUsername(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return null;
     }
 
     @Bean
@@ -35,17 +33,10 @@ public class ApplicationConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
-//    @Bean
-//    public AuthenticationManager authenticationManager() throws Exception {
-//        return authenticationManager(null);
-//    }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
