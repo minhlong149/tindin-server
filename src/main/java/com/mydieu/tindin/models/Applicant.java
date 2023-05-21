@@ -45,10 +45,10 @@ public class Applicant {
     @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
     private Set<ApplicantEducation> applicantEducations = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "applicant")
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
     private Set<ApplicantSkill> applicantSkills = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "applicant")
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
     private Set<ApplicantExperience> applicantExperiences = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "applicant")

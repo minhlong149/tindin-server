@@ -10,6 +10,8 @@ import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.repositories.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -155,11 +157,21 @@ public class ApplicantService {
                 }
 
                 if (education.startDate() != null) {
-                    applicantEducation.setStartDate(education.startDate());
+                    try {
+                        LocalDate startDate = LocalDate.parse(education.startDate());
+                        applicantEducation.setStartDate(startDate);
+                    } catch (DateTimeParseException e) {
+                        throw new InvalidRequestException("Start date for " + education.universityName() + " is invalid");
+                    }
                 }
 
                 if (education.completionDate() != null) {
-                    applicantEducation.setCompletionDate(education.completionDate());
+                    try {
+                        LocalDate completionDate = LocalDate.parse(education.completionDate());
+                        applicantEducation.setCompletionDate(completionDate);
+                    } catch (DateTimeParseException e) {
+                        throw new InvalidRequestException("Completion date for " + education.universityName() + " is invalid");
+                    }
                 }
 
                 if (education.gpa() != null) {
@@ -195,11 +207,24 @@ public class ApplicantService {
                 }
 
                 if (experience.startDate() != null) {
-                    applicantExperience.setStartDate(experience.startDate());
+                    try {
+                        LocalDate startDate = LocalDate.parse(experience.startDate());
+                        applicantExperience.setStartDate(startDate);
+                    } catch (DateTimeParseException e) {
+                        throw new InvalidRequestException("Start date for organization " + experience.organizationId() + " is invalid");
+                    }
                 }
 
                 if (experience.endDate() != null) {
-                    applicantExperience.setEndDate(experience.endDate());
+                    try {
+                        LocalDate endDate = LocalDate.parse(experience.endDate());
+                        if (endDate.isBefore(applicantExperience.getStartDate())) {
+                            throw new InvalidRequestException("End date for organization " + experience.organizationId() + " must be after start date");
+                        }
+                        applicantExperience.setEndDate(endDate);
+                    } catch (DateTimeParseException e) {
+                        throw new InvalidRequestException("End date for organization " + experience.organizationId() + " is invalid");
+                    }
                 }
 
                 if (experience.accomplishment() != null && !experience.accomplishment().isBlank()) {
