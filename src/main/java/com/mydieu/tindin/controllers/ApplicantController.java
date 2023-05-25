@@ -49,8 +49,7 @@ public class ApplicantController {
     }
 
     @PutMapping("{applicantId}")
-    public void updateApplicant(@PathVariable Integer applicantId, @RequestBody ApplicantDto applicantDto) {
-        applicantService.updateApplicant(applicantId, applicantDto);
+    public ApplicantDto updateApplicant(@PathVariable Integer applicantId, @RequestBody ApplicantRegistration applicant) {
+        return applicantService.updateApplicant(applicantId, applicant);
     }
-
 }

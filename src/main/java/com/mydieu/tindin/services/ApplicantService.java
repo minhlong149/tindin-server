@@ -89,52 +89,57 @@ public class ApplicantService {
         );
 
         Applicant newApplicant = new Applicant(newUser);
+        updateApplicantInfo(newApplicant, applicant);
 
-        // Add basic information
-        if (applicant.openForJob() != null) {
-            newApplicant.setOpenForJob(applicant.openForJob());
+        applicantRepository.save(newApplicant);
+        return ApplicantDto.fromApplicant(newApplicant);
+    }
+
+    private void updateApplicantInfo(Applicant applicant, ApplicantRegistration applicantRegistration) {
+        if (applicantRegistration.openForJob() != null) {
+            applicant.setOpenForJob(applicantRegistration.openForJob());
         }
 
-        if (applicant.title() != null && !applicant.title().isBlank()) {
-            newApplicant.setTitle(applicant.title());
+        if (applicantRegistration.title() != null && !applicantRegistration.title().isBlank()) {
+            applicant.setTitle(applicantRegistration.title());
         }
 
-        if (applicant.experienceLevelId() != null) {
-            ExperienceLevel experienceLevel = experienceLevelRepository.findById(applicant.experienceLevelId())
+        if (applicantRegistration.experienceLevelId() != null) {
+            ExperienceLevel experienceLevel = experienceLevelRepository.findById(applicantRegistration.experienceLevelId())
                     .orElseThrow(() -> new ResourceNotFoundException("Experience level not found"));
-            newApplicant.setExperienceLevel(experienceLevel);
+            applicant.setExperienceLevel(experienceLevel);
         }
 
-        if (applicant.preferLocationId() != null) {
-            Location location = locationRepository.findById(applicant.preferLocationId())
+        if (applicantRegistration.preferLocationId() != null) {
+            Location location = locationRepository.findById(applicantRegistration.preferLocationId())
                     .orElseThrow(() -> new ResourceNotFoundException("Location not found"));
-            newApplicant.setPreferLocation(location);
+            applicant.setPreferLocation(location);
         }
 
-        if (applicant.preferJobTypeId() != null) {
-            JobType jobType = jobTypeRepository.findById(applicant.preferJobTypeId())
+        if (applicantRegistration.preferJobTypeId() != null) {
+            JobType jobType = jobTypeRepository.findById(applicantRegistration.preferJobTypeId())
                     .orElseThrow(() -> new ResourceNotFoundException("Job type not found"));
-            newApplicant.setPreferJobType(jobType);
+            applicant.setPreferJobType(jobType);
         }
 
-        if (applicant.preferIndustryId() != null) {
-            Industry industry = industryRepository.findById(applicant.preferIndustryId())
+        if (applicantRegistration.preferIndustryId() != null) {
+            Industry industry = industryRepository.findById(applicantRegistration.preferIndustryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Industry not found"));
-            newApplicant.setPreferIndustry(industry);
+            applicant.setPreferIndustry(industry);
         }
 
-        if (applicant.preferSalary() != null) {
-            newApplicant.setPreferSalary(applicant.preferSalary());
+        if (applicantRegistration.preferSalary() != null) {
+            applicant.setPreferSalary(applicantRegistration.preferSalary());
         }
 
-        if (applicant.educations() != null && !applicant.educations().isEmpty()) {
-            applicant.educations().forEach(education -> {
+        if (applicantRegistration.educations() != null && !applicantRegistration.educations().isEmpty()) {
+            applicantRegistration.educations().forEach(education -> {
                 if (education.universityName() == null || education.universityName().isBlank()) {
                     throw new InvalidRequestException("University name is required");
                 }
 
                 ApplicantEducation applicantEducation = new ApplicantEducation(
-                        newApplicant,
+                        applicant,
                         education.universityName()
                 );
 
@@ -178,12 +183,12 @@ public class ApplicantService {
                     applicantEducation.setGpa(education.gpa());
                 }
 
-                newApplicant.getApplicantEducations().add(applicantEducation);
+                applicant.getApplicantEducations().add(applicantEducation);
             });
         }
 
-        if (applicant.experiences() != null && !applicant.experiences().isEmpty()) {
-            applicant.experiences().forEach(experience -> {
+        if (applicantRegistration.experiences() != null && !applicantRegistration.experiences().isEmpty()) {
+            applicantRegistration.experiences().forEach(experience -> {
                 if (experience.organizationId() == null) {
                     throw new InvalidRequestException("Organization id is required");
                 }
@@ -192,7 +197,7 @@ public class ApplicantService {
                         .orElseThrow(() -> new ResourceNotFoundException("Organization not found"));
 
                 ApplicantExperience applicantExperience = new ApplicantExperience(
-                        newApplicant,
+                        applicant,
                         organization
                 );
 
@@ -231,18 +236,18 @@ public class ApplicantService {
                     applicantExperience.setAccomplishment(experience.accomplishment());
                 }
 
-                newApplicant.getApplicantExperiences().add(applicantExperience);
+                applicant.getApplicantExperiences().add(applicantExperience);
             });
         }
 
-        if (applicant.skills() != null && !applicant.skills().isEmpty()) {
-            applicant.skills().forEach(skill -> {
+        if (applicantRegistration.skills() != null && !applicantRegistration.skills().isEmpty()) {
+            applicantRegistration.skills().forEach(skill -> {
                 if (skill.skill() == null || skill.skill().isBlank()) {
                     throw new InvalidRequestException("Skill name is required");
                 }
 
                 ApplicantSkill applicantSkill = new ApplicantSkill(
-                        newApplicant,
+                        applicant,
                         skill.skill()
                 );
 
@@ -250,16 +255,67 @@ public class ApplicantService {
                     applicantSkill.setSkillLevel(skill.skillLevel());
                 }
 
-                newApplicant.getApplicantSkills().add(applicantSkill);
+                applicant.getApplicantSkills().add(applicantSkill);
             });
         }
-
-        applicantRepository.save(newApplicant);
-        return ApplicantDto.fromApplicant(newApplicant);
     }
 
-    public void updateApplicant(Integer applicantId, ApplicantDto applicantDto) {
-        // TODO: Update applicant's information with the given ID
+    public ApplicantDto updateApplicant(Integer applicantId, ApplicantRegistration applicantRegistration) {
+        Applicant updateApplicant = applicantRepository.findById(applicantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Applicant not found"));
+
+        if (applicantRegistration.username() != null && !applicantRegistration.username().isBlank()) {
+            Boolean usernameIsTaken = accountRepository.existsByUsername(applicantRegistration.username());
+            if (usernameIsTaken) {
+                throw new InvalidRequestException("Username is taken");
+            }
+            updateApplicant.getUser().getAccount().setUsername(applicantRegistration.username());
+        }
+
+        if (applicantRegistration.password() != null && !applicantRegistration.password().isBlank()) {
+            updateApplicant.getUser().getAccount().setPassword(applicantRegistration.password());
+        }
+
+        updateUserInfo(updateApplicant, applicantRegistration);
+        updateApplicantInfo(updateApplicant, applicantRegistration);
+
+        applicantRepository.save(updateApplicant);
+        return ApplicantDto.fromApplicant(updateApplicant);
+    }
+
+    private static void updateUserInfo(Applicant applicant, ApplicantRegistration applicantRegistration) {
+        if (applicantRegistration.firstName() != null && !applicantRegistration.firstName().isBlank()) {
+            applicant.getUser().setFirstName(applicantRegistration.firstName());
+        }
+
+        if (applicantRegistration.lastName() != null && !applicantRegistration.lastName().isBlank()) {
+            applicant.getUser().setLastName(applicantRegistration.lastName());
+        }
+
+        if (applicantRegistration.gender() != null) {
+            applicant.getUser().setGender(applicantRegistration.gender());
+        }
+
+        if (applicantRegistration.dateOfBirth() != null) {
+            applicant.getUser().setDateOfBirth(applicantRegistration.dateOfBirth());
+        }
+
+        if (applicantRegistration.profileUrl() != null && !applicantRegistration.profileUrl().isBlank()) {
+            applicant.getUser().setProfileUrl(applicantRegistration.profileUrl());
+        }
+
+        if (applicantRegistration.email() != null && !applicantRegistration.email().isBlank()) {
+            applicant.getUser().setEmail(applicantRegistration.email());
+        }
+
+        if (applicantRegistration.phone() != null && !applicantRegistration.phone().isBlank()) {
+            applicant.getUser().setPhone(applicantRegistration.phone());
+        }
+
+        if (applicantRegistration.website() != null && !applicantRegistration.website().isBlank()) {
+            applicant.getUser().setWebsite(applicantRegistration.website());
+        }
+
     }
 
     public List<JobDto> findJobsByApplicantId(Integer applicantId) {

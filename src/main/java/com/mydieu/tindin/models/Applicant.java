@@ -42,13 +42,13 @@ public class Applicant {
     @Column(name = "prefer_salary")
     private Integer preferSalary;
 
-    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicantEducation> applicantEducations = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicantSkill> applicantSkills = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicantExperience> applicantExperiences = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "applicant")
