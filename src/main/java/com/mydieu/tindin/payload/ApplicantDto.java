@@ -1,10 +1,7 @@
 package com.mydieu.tindin.payload;
 
-import com.mydieu.tindin.models.Applicant;
-
 import java.io.Serializable;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A DTO for the {@link com.mydieu.tindin.models.Applicant} entity
