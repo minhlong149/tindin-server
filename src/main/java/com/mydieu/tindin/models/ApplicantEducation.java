@@ -20,11 +20,11 @@ public class ApplicantEducation {
     @Column(name = "university_name", nullable = false, length = Integer.MAX_VALUE)
     private String universityName;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "degree_id")
     private Degree degree;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_id")
     private Major major;
 

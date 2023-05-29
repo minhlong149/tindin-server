@@ -277,6 +277,19 @@ public class ApplicantService {
         }
 
         updateUserInfo(updateApplicant, applicantRegistration);
+
+        if (applicantRegistration.educations() != null && !applicantRegistration.educations().isEmpty()) {
+            updateApplicant.getApplicantEducations().clear();
+        }
+
+        if (applicantRegistration.experiences() != null && !applicantRegistration.experiences().isEmpty()) {
+            updateApplicant.getApplicantExperiences().clear();
+        }
+
+        if (applicantRegistration.skills() != null && !applicantRegistration.skills().isEmpty()) {
+            updateApplicant.getApplicantSkills().clear();
+        }
+
         updateApplicantInfo(updateApplicant, applicantRegistration);
 
         applicantRepository.save(updateApplicant);
