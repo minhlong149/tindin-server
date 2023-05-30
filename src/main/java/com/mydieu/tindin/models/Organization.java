@@ -18,10 +18,12 @@ public class Organization {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "industry_id")
+    private Integer industry_id;
     private Industry industry;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "location_id", nullable = false)
+    private Integer location_id;
     private Location location;
 
     @Column(name = "email", length = Integer.MAX_VALUE)
@@ -57,6 +59,22 @@ public class Organization {
         this.description = description;
     }
 
+    public Integer getIndustry_id() {
+        return industry_id;
+    }
+
+    public void setIndustry_id(Integer industry_id) {
+        this.industry_id = industry_id;
+    }
+
+    public Integer getLocation_id() {
+        return location_id;
+    }
+
+    public void setLocation_id(Integer location_id) {
+        this.location_id = location_id;
+    }
+
     public Industry getIndustry() {
         return industry;
     }
@@ -72,6 +90,7 @@ public class Organization {
     public void setLocation(Location location) {
         this.location = location;
     }
+    
 
     public String getEmail() {
         return email;
