@@ -43,9 +43,9 @@ public class JobService {
             Optional<Integer> minimumSalary
     ) {
         // TODO: Return jobs for applicant based on filters
-        Integer id=77;
+        Integer id=0;
         if(applicantId.isPresent()) {
-            id = applicantId.get();
+            id = applicantId.orElse(0);
         }
         Applicant applicant = applicantRepository.findById(id).orElseThrow();
 
@@ -53,7 +53,6 @@ public class JobService {
         if (jobFilter.isEmpty()){
             throw new ResourceNotFoundException("No job found");
         }
-
         return jobFilter.stream().map(JobDto::fromJobPost).toList();
     }
 
