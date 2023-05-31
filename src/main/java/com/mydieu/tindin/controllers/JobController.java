@@ -62,8 +62,8 @@ public class JobController {
     @PostMapping("{jobId}")
     public void applyForJob(
             @PathVariable Integer jobId,
-            @RequestBody Integer appliedUserId,
-            @RequestBody Integer applicantId
+            @RequestParam Integer appliedUserId,
+            @RequestParam Integer applicantId
     ) {
         jobService.applyForJob(jobId, applicantId, appliedUserId);
     }

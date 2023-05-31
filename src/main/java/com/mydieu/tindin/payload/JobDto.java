@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
  */
 public record JobDto(
         Integer id,
-        Integer recruiter_id,
+        RecruiterDto recruiter,
         String title,
         String description,
-        Integer jobType_id,
+        String jobType,
         Integer salary,
         Instant createdDate,
         Instant closingDate,
@@ -28,10 +28,10 @@ public record JobDto(
     public static JobDto fromJobPost(JobPost jobPost) {
         return new JobDto(
                 jobPost.getId(),
-                jobPost.getRecruiter_id(),
+                RecruiterDto.fromRecruiter(jobPost.getRecruiter()),
                 jobPost.getTitle(),
                 jobPost.getDescription(),
-                jobPost.getJobType_id(),
+                jobPost.getJobType().getName(),
                 jobPost.getSalary(),
                 jobPost.getCreatedDate(),
                 jobPost.getClosingDate(),

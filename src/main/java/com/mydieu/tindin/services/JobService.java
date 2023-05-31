@@ -11,8 +11,12 @@ import com.mydieu.tindin.repositories.JobPostRepository;
 import com.mydieu.tindin.repositories.UserRepository;
 import com.mydieu.tindin.repositories.*;
 import org.springframework.stereotype.Service;
-
+import com.mydieu.tindin.utils.Retrieval;
+import com.mydieu.tindin.specification.JobPostSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +31,7 @@ public class JobService {
     public JobService(JobPostRepository jobPostRepository,
                       ApplicantRepository applicantRepository,
                       UserRepository userRepository,
-                      JobPostActivityRepository jobPostActivityRepository,
+                      JobPostActivityRepository jobPostActivityRepository
                       //RecruiterRepository recruiterRepository,
                       //JobTypeRepository jobTypeRepository
         ) {
@@ -54,63 +58,56 @@ public class JobService {
             id = applicantId.orElse(0);
         }
         Applicant applicant = applicantRepository.findById(id).orElseThrow();
+//
+//        List<JobPost> jobFilter = jobPostRepository.findByTitle(applicant.getTitle());
+//        if (jobFilter.isEmpty()){
+//            throw new ResourceNotFoundException("No job found");
+//        }
+//        return jobFilter.stream().map(JobDto::fromJobPost).toList();
+        Specification<JobPost> spec = Specification.where(null);
 
-        List<JobPost> jobFilter = jobPostRepository.findByTitle(applicant.getTitle());
-        if (jobFilter.isEmpty()){
-            throw new ResourceNotFoundException("No job found");
+        if (jobTitle.isPresent()) {
+            spec = spec.and(JobPostSpecification.jobTitleContains(jobTitle.orElse("")));
         }
-        return jobFilter.stream().map(JobDto::fromJobPost).toList();
+
+        if (jobType.isPresent()) {
+            spec = spec.and(JobPostSpecification.jobTypeLike(jobType.get()));
+        }
+
+        if (jobLocation.isPresent()) {
+            spec = spec.and(JobPostSpecification.jobLocationLike(jobLocation.get()));
+        }
+        if (organizationName.isPresent()){
+            spec=spec.and(JobPostSpecification.jobOrganizationNameLike(organizationName.get()));
+        }
+        if(organizationIndustry.isPresent()) {
+            spec =spec.and(JobPostSpecification.jobOrganizationIndustryLike(organizationIndustry.get()));
+        }
+        if(skills.isPresent()){
+            spec=spec.and(JobPostSpecification.jobSkillIs(skills.get()));
+        }
+        if(experienceLevel.isPresent()){
+            spec=spec.and(JobPostSpecification.jobExperienceLevelIs(experienceLevel.get()));
+        }
+        if(minimumSalary.isPresent()){
+            spec=spec.and(JobPostSpecification.jobMinimumSalaryIs(minimumSalary.get()));
+        }
+        List<JobPost> jobFilter = jobPostRepository.findAll(spec);
+        List<JobPost> jobPostsSortList = Retrieval.sortJobPosts(jobFilter,applicant);
+        return jobPostsSortList.stream().map(JobDto::fromJobPost).toList();
     }
 
     public JobDto findJobById(Integer jobId) {
         // TODO: Find job by ID
-        return jobPostRepository.findById(jobId).map(JobDto::fromJobPost).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
+        return null;
     }
 
     public void createJob(JobDto jobDto) {
         // TODO: Create job
-        JobPost newJob = new JobPost();
-        newJob.setId(jobDto.id());
-        newJob.setRecruiter_id(jobDto.recruiter_id());
-        newJob.setTitle(jobDto.title());
-        newJob.setDescription(jobDto.description());
-        newJob.setJobType_id(jobDto.jobType_id());
-        newJob.setSalary(jobDto.salary());
-        newJob.setCreatedDate(jobDto.createdDate());
-        newJob.setClosingDate(jobDto.closingDate());
-        newJob.setIsOpen(jobDto.isOpen());
-        jobPostRepository.save(newJob);
     }
 
     public void updateJob(Integer jobId, JobDto jobDto) {
         // TODO: Update job
-        JobPost job = jobPostRepository.findById(jobId).orElseThrow(()-> new ResourceNotFoundException("Job not found"));
-        if(jobDto.title() != null && !jobDto.title().isBlank()) {
-            job.setTitle(jobDto.title());
-        }
-        if(jobDto.recruiter_id() != null) {
-            job.setRecruiter_id(jobDto.recruiter_id());
-        }
-        if(jobDto.description() != null && !jobDto.description().isBlank()) {
-            job.setDescription(jobDto.description());
-        }
-        if(jobDto.jobType_id() != null) {
-            job.setJobType_id(jobDto.jobType_id());
-        }
-        if(jobDto.salary() != null) {
-            job.setSalary(jobDto.salary());
-        }
-        if(jobDto.createdDate() != null) {
-            job.setCreatedDate(jobDto.createdDate());
-        }
-        if(jobDto.closingDate() != null) {
-            job.setClosingDate(jobDto.closingDate());
-        }
-        if(jobDto.isOpen() != null) {
-            job.setIsOpen(jobDto.isOpen());
-        }
-        jobPostRepository.save(job);
-
 
     }
 
@@ -122,25 +119,24 @@ public class JobService {
                 .orElseThrow(() -> new ResourceNotFoundException("Applicant not found"));
         User user = userRepository.findById(appliedUserId)
                 .orElseThrow(()-> new ResourceNotFoundException("User not found"));
-        Instant now = Instant.now();
+        ZoneOffset zoneOffset = ZoneOffset.ofHours(7);
+        OffsetDateTime offsetDateTime = OffsetDateTime.of(2022, 12, 31, 23, 59, 59, 0, zoneOffset);
+        Instant now = offsetDateTime.toInstant();
+
 
         JobPostActivity newJobPostActivity = new JobPostActivity();
         newJobPostActivity.setJob(jobPost);
         newJobPostActivity.setApplicant(applicant);
         newJobPostActivity.setUserApplied(user);
         newJobPostActivity.setApplyDate(now);
-        jobPostActivityRepository.save(newJobPostActivity);
+        jobPostActivityRepository.saveAndFlush(newJobPostActivity);
 
     }
 
     public void unapplyForJob(Integer jobId, Integer applicantId) {
         // TODO: Unapply applicant from job
-        JobPost jobPost = jobPostRepository.findById(jobId)
-                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
-        Applicant applicant = applicantRepository.findById(applicantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Applicant not found"));
         try{
-        jobPostActivityRepository.deleteByJobIdAndApplicantId(jobPost,applicant);
+        jobPostActivityRepository.deleteByJobIdAndApplicantId(jobId,applicantId);
         }
         catch (Exception e)
         {
@@ -151,11 +147,17 @@ public class JobService {
 
     public List<ApplicantDto> findApplicantsByJobId(Integer jobId) {
         // TODO: Find applicants applied for job
-        return null;
+        JobPost jobPost = jobPostRepository.findById(jobId).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
+        List<Applicant> applicantList = jobPostActivityRepository.findApplicantByJob(jobPost);
+        return applicantList.stream().map(ApplicantDto::fromApplicant).toList();
     }
 
     public List<ApplicantDto> findRecommendedApplicantsByJobId(Integer jobId) {
         // TODO: Find applicants suitable for job
-        return null;
+        JobPost jobPost = jobPostRepository.findById(jobId).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
+        List<Applicant> applicantList = jobPostActivityRepository.findApplicantByJob(jobPost);
+        List<Applicant> sortApplicant = Retrieval.sortApplicants(applicantList,jobPost);
+        return sortApplicant.stream().map(ApplicantDto::fromApplicant).toList();
+
     }
 }
