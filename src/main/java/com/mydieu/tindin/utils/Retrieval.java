@@ -31,7 +31,7 @@ public class Retrieval {
         }
 
         // Sort the documents by their cosine similarity score
-        jobs.sort(Comparator.comparing(job -> jobScores[jobs.indexOf(job)]));
+        jobs.sort(Comparator.comparing(job -> jobScores[jobs.indexOf(job)]).reversed());
         return jobs;
     }
 
@@ -58,7 +58,7 @@ public class Retrieval {
         }
 
         // Sort the documents by their cosine similarity score
-        applicants.sort(Comparator.comparing(applicant -> applicantScores[applicants.indexOf(applicant)]));
+        applicants.sort(Comparator.comparing(applicant -> applicantScores[applicants.indexOf(applicant)]).reversed());
         return applicants;
     }
 
