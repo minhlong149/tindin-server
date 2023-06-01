@@ -120,7 +120,6 @@ public class Retrieval {
         if (applicant.getPreferIndustry() != null) {
             document.add(applicant.getPreferIndustry().getName());
         }
-        // document.applicant.getPreferIndustry().getName());
 
         for (ApplicantEducation education : applicant.getApplicantEducations()) {
             document.add(education.getDegree().getName());
@@ -148,35 +147,11 @@ public class Retrieval {
 
         if (job.getRecruiter().getOrganization() != null) {
             document.add(job.getRecruiter().getOrganization().getDescription());
-
-            if (job.getRecruiter().getOrganization().getLocation() != null) {
-                document.add(job.getRecruiter().getOrganization().getLocation().getCity());
-            }
-
-            if (job.getRecruiter().getOrganization().getIndustry() != null) {
-                document.add(job.getRecruiter().getOrganization().getIndustry().getName());
-            }
         }
 
         document.add(job.getTitle());
         document.add(job.getDescription());
         document.add(job.getJobType().getName());
-
-        for (JobRequireDegree degree : job.getJobRequireDegrees()) {
-            document.add(degree.getDegree().getName());
-        }
-
-        for (JobRequireMajor major : job.getJobRequireMajors()) {
-            document.add(major.getMajor().getName());
-        }
-
-        for (JobRequireSkill skill : job.getJobRequireSkills()) {
-            document.add(skill.getSkill());
-        }
-
-        for (JobRequireExperienceLevel experienceLevel : job.getJobRequireExperienceLevels()) {
-            document.add(experienceLevel.getExperienceLevel().getName());
-        }
 
         String documentAsString = String.join(" ", document);
         documentAsString = documentAsString.replaceAll("[^a-zA-Z0-9\\s]", "");
