@@ -104,10 +104,23 @@ public class Retrieval {
         ArrayList<String> document = new ArrayList<>();
 
         document.add(applicant.getTitle());
-        document.add(applicant.getExperienceLevel().getName());
-        document.add(applicant.getPreferLocation().getCity());
-        document.add(applicant.getPreferJobType().getName());
-        document.add(applicant.getPreferIndustry().getName());
+
+        if (applicant.getExperienceLevel() != null) {
+            document.add(applicant.getExperienceLevel().getName());
+        }
+
+        if (applicant.getPreferLocation() != null) {
+            document.add(applicant.getPreferLocation().getCity());
+        }
+
+        if (applicant.getPreferJobType() != null) {
+            document.add(applicant.getPreferJobType().getName());
+
+        }
+        if (applicant.getPreferIndustry() != null) {
+            document.add(applicant.getPreferIndustry().getName());
+        }
+        // document.applicant.getPreferIndustry().getName());
 
         for (ApplicantEducation education : applicant.getApplicantEducations()) {
             document.add(education.getDegree().getName());
@@ -133,9 +146,17 @@ public class Retrieval {
     private static List<String> createDocument(JobPost job) {
         ArrayList<String> document = new ArrayList<>();
 
-        document.add(job.getRecruiter().getOrganization().getDescription());
-        document.add(job.getRecruiter().getOrganization().getLocation().getCity());
-        document.add(job.getRecruiter().getOrganization().getIndustry().getName());
+        if (job.getRecruiter().getOrganization() != null) {
+            document.add(job.getRecruiter().getOrganization().getDescription());
+
+            if (job.getRecruiter().getOrganization().getLocation() != null) {
+                document.add(job.getRecruiter().getOrganization().getLocation().getCity());
+            }
+
+            if (job.getRecruiter().getOrganization().getIndustry() != null) {
+                document.add(job.getRecruiter().getOrganization().getIndustry().getName());
+            }
+        }
 
         document.add(job.getTitle());
         document.add(job.getDescription());
