@@ -58,12 +58,7 @@ public class JobService {
             id = applicantId.orElse(0);
         }
         Applicant applicant = applicantRepository.findById(id).orElseThrow();
-//
-//        List<JobPost> jobFilter = jobPostRepository.findByTitle(applicant.getTitle());
-//        if (jobFilter.isEmpty()){
-//            throw new ResourceNotFoundException("No job found");
-//        }
-//        return jobFilter.stream().map(JobDto::fromJobPost).toList();
+
         Specification<JobPost> spec = Specification.where(null);
 
         if (jobTitle.isPresent()) {
@@ -93,8 +88,11 @@ public class JobService {
             spec=spec.and(JobPostSpecification.jobMinimumSalaryIs(minimumSalary.get()));
         }
         List<JobPost> jobFilter = jobPostRepository.findAll(spec);
-        List<JobPost> jobPostsSortList = Retrieval.sortJobPosts(jobFilter,applicant);
-        return jobPostsSortList.stream().map(JobDto::fromJobPost).toList();
+        if(jobFilter.isEmpty()) {
+            jobFilter = jobPostRepository.findAll();
+        }
+        //List<JobPost> jobPostsSortList = Retrieval.sortJobPosts(jobFilter,applicant);
+        return jobFilter.stream().map(JobDto::fromJobPost).toList();
     }
 
     public JobDto findJobById(Integer jobId) {

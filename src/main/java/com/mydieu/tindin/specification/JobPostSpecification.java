@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public final class JobPostSpecification {
     public static Specification<JobPost> jobTitleContains(String jobTitle) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("title"), jobTitle);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("title"), "%"+ jobTitle + "%");
     }
 
     public static Specification<JobPost> jobTypeLike(String jobType) {
