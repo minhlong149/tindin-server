@@ -1,16 +1,13 @@
 package com.mydieu.tindin.security;
 
 import com.mydieu.tindin.repositories.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpHeaders;
+
+import com.mydieu.tindin.models.Account;
+import com.mydieu.tindin.models.User;
+import com.mydieu.tindin.repositories.AccountRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +16,8 @@ public class AuthenticationService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private AccountRepository accountRepository;
+    private UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationService(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
@@ -42,16 +41,23 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        // authenticationManager.authenticate(
-        //         new UsernamePasswordAuthenticationToken(
-        //                 request.getUsername(),
-        //                 request.getPassword()
-        //         )
-        // );
-        // var user = repository.findByUsername(request.getUsername())
-        //         .orElseThrow();
-        // var jwtToken = jwtService.generateToken(user);
-        // return new AuthenticationResponse(jwtToken);
-        return null;
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+
+        // Authentication successful, generate JWT token
+        Account account = accountRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        User user = userRepository.findById(account.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        var jwtToken = jwtService.generateToken(account);
+        Integer userId = user.getId();
+        String role = user.getRole().name();
+        return new AuthenticationResponse(jwtToken, userId, role);
     }
 }
