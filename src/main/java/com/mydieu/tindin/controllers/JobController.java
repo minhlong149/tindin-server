@@ -2,6 +2,7 @@ package com.mydieu.tindin.controllers;
 
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
+import com.mydieu.tindin.payload.JobSmallDto;
 import com.mydieu.tindin.services.JobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class JobController {
     }
 
     @GetMapping("")
-    public List<JobDto> getJobs(
+    public List<JobSmallDto> getJobs(
             @RequestBody Optional<Integer> applicantId,
             @RequestParam Optional<String> jobTitle,
             @RequestParam Optional<String> jobType,

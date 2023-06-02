@@ -1,19 +1,27 @@
 package com.mydieu.tindin.services;
 
+import com.mydieu.tindin.exception.DuplicateResourceException;
 import com.mydieu.tindin.models.*;
 import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
+import com.mydieu.tindin.payload.JobSmallDto;
 import com.mydieu.tindin.payload.RecruiterDto;
 import com.mydieu.tindin.repositories.ApplicantRepository;
 import com.mydieu.tindin.repositories.JobPostActivityRepository;
 import com.mydieu.tindin.repositories.JobPostRepository;
 import com.mydieu.tindin.repositories.UserRepository;
 import com.mydieu.tindin.repositories.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.mydieu.tindin.utils.Retrieval;
 import com.mydieu.tindin.specification.JobPostSpecification;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -41,7 +49,7 @@ public class JobService {
         this.jobPostActivityRepository = jobPostActivityRepository;
     }
 
-    public List<JobDto> findJobs(
+    public List<JobSmallDto> findJobs(
             Optional<Integer> applicantId,
             Optional<String> jobTitle,
             Optional<String> jobType,
@@ -51,6 +59,8 @@ public class JobService {
             Optional<String> skills,
             Optional<String> experienceLevel,
             Optional<Integer> minimumSalary
+//            Optional<Integer> pageNumber,
+//            Optional<Integer> pageSize
     ) {
         // TODO: Return jobs for applicant based on filters
         Integer id=0;
@@ -72,6 +82,7 @@ public class JobService {
         if (jobLocation.isPresent()) {
             spec = spec.and(JobPostSpecification.jobLocationLike(jobLocation.get()));
         }
+
         if (organizationName.isPresent()){
             spec=spec.and(JobPostSpecification.jobOrganizationNameLike(organizationName.get()));
         }
@@ -86,13 +97,13 @@ public class JobService {
         }
         if(minimumSalary.isPresent()){
             spec=spec.and(JobPostSpecification.jobMinimumSalaryIs(minimumSalary.get()));
+        }else{
+            spec=spec.and(JobPostSpecification.jobMinimumSalaryIs(applicant.getPreferSalary()));
         }
+
         List<JobPost> jobFilter = jobPostRepository.findAll(spec);
-        if(jobFilter.isEmpty()) {
-            jobFilter = jobPostRepository.findAll();
-        }
-        //List<JobPost> jobPostsSortList = Retrieval.sortJobPosts(jobFilter,applicant);
-        return jobFilter.stream().map(JobDto::fromJobPost).toList();
+        List<JobPost> jobPostsSortList = Retrieval.sortJobPosts(jobFilter,applicant);
+        return jobPostsSortList.stream().map(JobSmallDto::fromJobPost).toList();
     }
 
     public JobDto findJobById(Integer jobId) {
@@ -121,25 +132,30 @@ public class JobService {
         OffsetDateTime offsetDateTime = OffsetDateTime.of(2022, 12, 31, 23, 59, 59, 0, zoneOffset);
         Instant now = offsetDateTime.toInstant();
 
-
-        JobPostActivity newJobPostActivity = new JobPostActivity();
-        newJobPostActivity.setJob(jobPost);
-        newJobPostActivity.setApplicant(applicant);
-        newJobPostActivity.setUserApplied(user);
-        newJobPostActivity.setApplyDate(now);
-        jobPostActivityRepository.saveAndFlush(newJobPostActivity);
+        Applicant checkExist = jobPostActivityRepository.findApplicantByJobAndAppplicant(jobId, applicantId);
+        if(checkExist != null) {
+            throw new ResourceNotFoundException("Have applied");
+        }
+        else {
+            JobPostActivity newJobPostActivity = new JobPostActivity();
+            newJobPostActivity.setJob(jobPost);
+            newJobPostActivity.setApplicant(applicant);
+            newJobPostActivity.setUserApplied(user);
+            newJobPostActivity.setApplyDate(now);
+            jobPostActivityRepository.saveAndFlush(newJobPostActivity);
+        }
 
     }
 
     public void unapplyForJob(Integer jobId, Integer applicantId) {
         // TODO: Unapply applicant from job
-        try{
-        jobPostActivityRepository.deleteByJobIdAndApplicantId(jobId,applicantId);
-        }
-        catch (Exception e)
-        {
-            System.err.println(e.getMessage());
-        }
+            Applicant checkExist = jobPostActivityRepository.findApplicantByJobAndAppplicant(jobId,applicantId);
+            if(checkExist == null) {
+                throw new ResourceNotFoundException( "Haven't applied yet");
+            }
+            else {
+                jobPostActivityRepository.deleteByJobIdAndApplicantId(jobId, applicantId);
+            }
 
     }
 

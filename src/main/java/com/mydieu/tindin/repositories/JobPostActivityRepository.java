@@ -19,4 +19,8 @@ public interface JobPostActivityRepository extends JpaRepository<JobPostActivity
     @Transactional
     @Query("select applicant from JobPostActivity jb where jb.job = ?1 ")
     List<Applicant> findApplicantByJob(JobPost job);
+
+    @Query("select applicant from JobPostActivity jb where jb.job.id = ?1 and jb.applicant.id =?2 ")
+    Applicant findApplicantByJobAndAppplicant(Integer job, Integer applicant);
+
 }
