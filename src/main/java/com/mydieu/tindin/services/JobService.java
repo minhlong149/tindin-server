@@ -1,5 +1,6 @@
 package com.mydieu.tindin.services;
 
+<<<<<<< HEAD
 import com.mydieu.tindin.exception.InvalidRequestException;
 import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.models.JobPost;
@@ -9,6 +10,20 @@ import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.JobRegistration;
 import com.mydieu.tindin.repositories.JobPostRepository;
 import com.mydieu.tindin.repositories.RecruiterRepository;
+=======
+import com.mydieu.tindin.exception.ResourceNotFoundException;
+import com.mydieu.tindin.models.JobPost;
+import com.mydieu.tindin.models.JobType;
+import com.mydieu.tindin.models.Recruiter;
+import com.mydieu.tindin.payload.ApplicantDto;
+import com.mydieu.tindin.payload.JobDto;
+import com.mydieu.tindin.payload.RecruiterDto;
+import com.mydieu.tindin.repositories.JobPostRepository;
+import com.mydieu.tindin.repositories.RecruiterRepository;
+import com.mydieu.tindin.repositories.*;
+
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
+>>>>>>> b80118a1fabd57b4f0f32d952c1790be740a12e4
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +34,13 @@ public class JobService {
     private final JobPostRepository jobPostRepository;
     private final RecruiterRepository recruiterRepository;
 
+<<<<<<< HEAD
     public JobService(JobPostRepository jobPostRepository, RecruiterRepository recruiterRepository) {
+=======
+
+
+    public JobService(JobPostRepository jobPostRepository, RecruiterRepository recruiterRepository, JobTypeRepository jobTypeRepository) {
+>>>>>>> b80118a1fabd57b4f0f32d952c1790be740a12e4
         this.jobPostRepository = jobPostRepository;
         this.recruiterRepository = recruiterRepository;
     }
@@ -43,9 +64,19 @@ public class JobService {
         // TODO: Find job by ID
         return jobPostRepository.findById(jobId).map(JobDto::fromJobPost).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
     }
+        // Integer id,
+        // RecruiterDto recruiter,
+        // String title,
+        // String description,
+        // String jobType,
+        // Integer salary,
+        // Instant createdDate,
+        // Instant closingDate,
+        // Boolean isOpen,
 
     public void createJob(JobRegistration job) {
         // TODO: Create job
+<<<<<<< HEAD
         if(job.recruiterId() == null) {
             throw new InvalidRequestException("Recruiter Id is required");
         }
@@ -63,11 +94,25 @@ public class JobService {
         );
         jobPostRepository.save(newJob);
         
+=======
+        JobPost newJob = new JobPost();
+        newJob.setId(jobDto.id());
+        newJob.setRecruiter_id(jobDto.recruiter_id());
+        newJob.setTitle(jobDto.title());
+        newJob.setDescription(jobDto.description());
+        newJob.setJobType_id(jobDto.jobType_id());
+        newJob.setSalary(jobDto.salary());
+        newJob.setCreatedDate(jobDto.createdDate());
+        newJob.setClosingDate(jobDto.closingDate());
+        newJob.setIsOpen(jobDto.isOpen());
+        jobPostRepository.save(newJob);
+>>>>>>> b80118a1fabd57b4f0f32d952c1790be740a12e4
     }
 
     public void updateJob(Integer jobId, JobRegistration newJob) {
         // TODO: Update job
         JobPost job = jobPostRepository.findById(jobId).orElseThrow(()-> new ResourceNotFoundException("Job not found"));
+<<<<<<< HEAD
         if(newJob.title() != null && !newJob.title().isBlank()) {
             job.setTitle(newJob.title());
         }
@@ -93,6 +138,31 @@ public class JobService {
         }
         if(newJob.isOpen() != null) {
             job.setIsOpen(newJob.isOpen());
+=======
+        if(jobDto.title() != null && !jobDto.title().isBlank()) {
+            job.setTitle(jobDto.title());
+        }
+        if(jobDto.recruiter_id() != null) {
+            job.setRecruiter_id(jobDto.recruiter_id());
+        }
+        if(jobDto.description() != null && !jobDto.description().isBlank()) {
+            job.setDescription(jobDto.description());
+        }
+        if(jobDto.jobType_id() != null) {
+            job.setJobType_id(jobDto.jobType_id());
+        }
+        if(jobDto.salary() != null) {
+            job.setSalary(jobDto.salary());
+        }
+        if(jobDto.createdDate() != null) {
+            job.setCreatedDate(jobDto.createdDate());
+        }
+        if(jobDto.closingDate() != null) {
+            job.setClosingDate(jobDto.closingDate());
+        }
+        if(jobDto.isOpen() != null) {
+            job.setIsOpen(jobDto.isOpen());
+>>>>>>> b80118a1fabd57b4f0f32d952c1790be740a12e4
         }
         jobPostRepository.save(job);
 

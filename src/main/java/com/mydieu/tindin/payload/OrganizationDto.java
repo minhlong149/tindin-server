@@ -11,8 +11,8 @@ public record OrganizationDto(
         Integer id,
         String name,
         String description,
-        String industry,
-        String location,
+        Integer industry_id,
+        Integer location_id,
         String email,
         String phone,
         String website
@@ -22,11 +22,12 @@ public record OrganizationDto(
                 organization.getId(),
                 organization.getName(),
                 organization.getDescription(),
-                organization.getIndustry().getName(),
-                organization.getLocation().getCity(),
+                organization.getIndustry_id(),
+                organization.getLocation_id(),
                 organization.getEmail(),
                 organization.getPhone(),
                 organization.getWebsite()
         );
     }
+
 }
