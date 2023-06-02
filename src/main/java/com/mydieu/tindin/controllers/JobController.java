@@ -29,9 +29,12 @@ public class JobController {
             @RequestParam Optional<String> organizationIndustry,
             @RequestParam Optional<String> skills,
             @RequestParam Optional<String> experienceLevel,
-            @RequestParam Optional<Integer> minimumSalary
+            @RequestParam Optional<Integer> minimumSalary,
+            @RequestParam Optional<Integer> pageNumber,
+            @RequestParam Optional<Integer> pageSize
+
     ) {
-        return jobService.findJobs(applicantId, jobTitle, jobType, jobLocation, organizationName, organizationIndustry, skills, experienceLevel, minimumSalary);
+        return jobService.findJobs(applicantId, jobTitle, jobType, jobLocation, organizationName, organizationIndustry, skills, experienceLevel, minimumSalary, pageNumber, pageSize);
     }
 
     @GetMapping("{jobId}")

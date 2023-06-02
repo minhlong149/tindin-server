@@ -1,19 +1,14 @@
 package com.mydieu.tindin.services;
 
-import com.mydieu.tindin.exception.DuplicateResourceException;
 import com.mydieu.tindin.models.*;
 import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.JobSmallDto;
-import com.mydieu.tindin.payload.RecruiterDto;
 import com.mydieu.tindin.repositories.ApplicantRepository;
 import com.mydieu.tindin.repositories.JobPostActivityRepository;
 import com.mydieu.tindin.repositories.JobPostRepository;
 import com.mydieu.tindin.repositories.UserRepository;
-import com.mydieu.tindin.repositories.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -58,10 +53,10 @@ public class JobService {
             Optional<String> organizationIndustry,
             Optional<String> skills,
             Optional<String> experienceLevel,
-            Optional<Integer> minimumSalary
-//            Optional<Integer> pageNumber,
-//            Optional<Integer> pageSize
-    ) {
+            Optional<Integer> minimumSalary,
+            Optional<Integer> pageNumber,
+            Optional<Integer> pageSize)
+    {
         // TODO: Return jobs for applicant based on filters
         Integer id=0;
         if(applicantId.isPresent()) {
@@ -86,22 +81,28 @@ public class JobService {
         if (organizationName.isPresent()){
             spec=spec.and(JobPostSpecification.jobOrganizationNameLike(organizationName.get()));
         }
+
         if(organizationIndustry.isPresent()) {
             spec =spec.and(JobPostSpecification.jobOrganizationIndustryLike(organizationIndustry.get()));
         }
+
         if(skills.isPresent()){
             spec=spec.and(JobPostSpecification.jobSkillIs(skills.get()));
         }
+
         if(experienceLevel.isPresent()){
             spec=spec.and(JobPostSpecification.jobExperienceLevelIs(experienceLevel.get()));
         }
+
         if(minimumSalary.isPresent()){
             spec=spec.and(JobPostSpecification.jobMinimumSalaryIs(minimumSalary.get()));
         }else{
             spec=spec.and(JobPostSpecification.jobMinimumSalaryIs(applicant.getPreferSalary()));
         }
+        Integer currentPage = pageNumber.orElse(0);
+        Integer currentPageSize = pageSize.orElse(15);
 
-        List<JobPost> jobFilter = jobPostRepository.findAll(spec);
+        List<JobPost> jobFilter = jobPostRepository.findAll(spec).subList(currentPage*currentPageSize,currentPageSize*(currentPage+1));
         List<JobPost> jobPostsSortList = Retrieval.sortJobPosts(jobFilter,applicant);
         return jobPostsSortList.stream().map(JobSmallDto::fromJobPost).toList();
     }
