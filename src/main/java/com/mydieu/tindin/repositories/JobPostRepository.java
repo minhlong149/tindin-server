@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface JobPostRepository extends JpaRepository<JobPost, Integer> {
     List<JobPost> findByRecruiterId(Integer recruiterId, Pageable pageable);
+
+    public List<JobPost> findJobsByOrganizationId(Integer organizationId);
 }
