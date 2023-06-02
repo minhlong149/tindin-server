@@ -16,7 +16,6 @@ public class JobPost {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "recruiter_id", nullable = false)
-    private Integer recruiter_id;
     private Recruiter recruiter;
 
     @Column(name = "title", nullable = false, length = Integer.MAX_VALUE)
@@ -27,7 +26,6 @@ public class JobPost {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "job_type_id", nullable = false)
-    private Integer jobType_id;
     private JobType jobType;
 
     @Column(name = "salary", nullable = false)
@@ -69,14 +67,6 @@ public class JobPost {
         this.id = id;
     }
 
-    public Integer getRecruiter_id() {
-        return recruiter_id;
-    }
-
-    public void setRecruiter_id(Integer recruiter_id) {
-        this.recruiter_id = recruiter_id;
-    }
-
     public Recruiter getRecruiter() {
         return recruiter;
     }
@@ -108,14 +98,6 @@ public class JobPost {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getJobType_id() {
-        return jobType_id;
-    }
-
-    public void setJobType_id(Integer jobType_id) {
-        this.jobType_id = jobType_id;
     }
 
     public Integer getSalary() {
