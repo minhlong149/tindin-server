@@ -45,7 +45,9 @@ public class JobService {
 
     public JobDto findJobById(Integer jobId) {
         // TODO: Find job by ID
-        return jobPostRepository.findById(jobId).map(JobDto::fromJobPost).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
+        return jobPostRepository.findById(jobId)
+                .map(JobDto::fromJobPost)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
     }
         // Integer id,
         // RecruiterDto recruiter,
