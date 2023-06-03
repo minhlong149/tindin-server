@@ -22,7 +22,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 
 @Service
@@ -35,8 +35,6 @@ public class JobService {
                       ApplicantRepository applicantRepository,
                       UserRepository userRepository,
                       JobPostActivityRepository jobPostActivityRepository
-                      //RecruiterRepository recruiterRepository,
-                      //JobTypeRepository jobTypeRepository
         ) {
         this.jobPostRepository = jobPostRepository;
         this.applicantRepository = applicantRepository;
@@ -68,6 +66,8 @@ public class JobService {
 
         if (jobTitle.isPresent()) {
             spec = spec.and(JobPostSpecification.jobTitleContains(jobTitle.orElse("")));
+        }else {
+            spec = spec.and(JobPostSpecification.jobTitleContains(applicant.getTitle()));
         }
 
         if (jobType.isPresent()) {
@@ -85,6 +85,9 @@ public class JobService {
         if(organizationIndustry.isPresent()) {
             spec =spec.and(JobPostSpecification.jobOrganizationIndustryLike(organizationIndustry.get()));
         }
+//        else {
+//            spec = spec.and(JobPostSpecification.jobTypeLike(applicant.getPreferIndustry().getName()));
+//        }
 
         if(skills.isPresent()){
             spec=spec.and(JobPostSpecification.jobSkillIs(skills.get()));
@@ -102,7 +105,11 @@ public class JobService {
         Integer currentPage = pageNumber.orElse(0);
         Integer currentPageSize = pageSize.orElse(15);
 
-        List<JobPost> jobFilter = jobPostRepository.findAll(spec).subList(currentPage*currentPageSize,currentPageSize*(currentPage+1));
+        List<JobPost> jobFilter = jobPostRepository.findAll(spec)
+                                .stream()
+                                .skip(currentPage * currentPageSize)
+                                .limit(currentPageSize)
+                                .collect(Collectors.toList());
         List<JobPost> jobPostsSortList = Retrieval.sortJobPosts(jobFilter,applicant);
         return jobPostsSortList.stream().map(JobSmallDto::fromJobPost).toList();
     }
