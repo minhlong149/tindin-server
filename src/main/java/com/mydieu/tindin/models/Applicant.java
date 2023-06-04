@@ -17,42 +17,51 @@ public class Applicant {
     @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
-    @Column(name = "open_for_job")
+    @Column(name = "open_for_job", columnDefinition = "boolean default true")
     private Boolean openForJob;
 
     @Column(name = "title", length = Integer.MAX_VALUE)
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "experience_level_id")
     private ExperienceLevel experienceLevel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prefer_location_id")
     private Location preferLocation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prefer_job_type_id")
     private JobType preferJobType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prefer_industry_id")
     private Industry preferIndustry;
 
     @Column(name = "prefer_salary")
     private Integer preferSalary;
 
-    @OneToMany(mappedBy = "applicant")
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicantEducation> applicantEducations = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "applicant")
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicantSkill> applicantSkills = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "applicant")
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicantExperience> applicantExperiences = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "applicant")
     private Set<JobPostActivity> jobPostActivities = new LinkedHashSet<>();
+
+    public Applicant() {
+    }
+
+    public Applicant(User user) {
+        this.id = user.getId();
+        this.user = user;
+        this.openForJob = true;
+    }
 
     public Integer getId() {
         return id;

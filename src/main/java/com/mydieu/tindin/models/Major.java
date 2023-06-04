@@ -13,6 +13,13 @@ public class Major {
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
+    public Major() {
+    }
+
+    public Major(String major) {
+        this.name = major;
+    }
+
     public Integer getId() {
         return id;
     }

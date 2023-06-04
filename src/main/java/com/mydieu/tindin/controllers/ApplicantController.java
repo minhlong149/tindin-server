@@ -1,9 +1,10 @@
 package com.mydieu.tindin.controllers;
 
 import com.mydieu.tindin.payload.ApplicantDto;
+import com.mydieu.tindin.payload.ApplicantRegistration;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.services.ApplicantService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,19 +38,22 @@ public class ApplicantController {
     }
 
     @GetMapping("{applicantId}/jobs")
-    public List<JobDto> getJobs(@PathVariable Integer applicantId) {
-        return applicantService.findJobsByApplicantId(applicantId);
+    public List<JobDto> getJobs(
+            @PathVariable Integer applicantId,
+            @RequestParam Optional<Integer> pageNumber,
+            @RequestParam Optional<Integer> pageSize
+    ) {
+        return applicantService.findJobsByApplicantId(applicantId, pageNumber, pageSize);
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createApplicant(@RequestBody ApplicantDto applicantDto) {
-        applicantService.createApplicant(applicantDto);
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApplicantDto createApplicant(@RequestBody ApplicantRegistration newApplicant) {
+        return applicantService.createApplicant(newApplicant);
     }
 
     @PutMapping("{applicantId}")
-    public void updateApplicant(@PathVariable Integer applicantId, @RequestBody ApplicantDto applicantDto) {
-        applicantService.updateApplicant(applicantId, applicantDto);
+    public ApplicantDto updateApplicant(@PathVariable Integer applicantId, @RequestBody ApplicantRegistration applicant) {
+        return applicantService.updateApplicant(applicantId, applicant);
     }
-
 }

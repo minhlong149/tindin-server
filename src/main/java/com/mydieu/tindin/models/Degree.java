@@ -13,6 +13,13 @@ public class Degree {
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
+    public Degree() {
+    }
+
+    public Degree(String degree) {
+        this.name = degree;
+    }
+
     public Integer getId() {
         return id;
     }
