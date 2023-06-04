@@ -27,19 +27,6 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationResponse register(RegisteredRequest request) {
-        // var user = new User();
-        // user.setFirstName(request.getFirstName());
-        // user.setLastName(request.getLastName());
-        // user.setEmail(request.getEmail());
-        // user.setPassword(passwordEncoder.encode(request.getPassword()));
-        // user.setRole(request.getRole());
-        // repository.save(user);
-        // var jwtToken = jwtService.generateToken(user);
-        // return new AuthenticationResponse(jwtToken);
-        return null;
-    }
-
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
