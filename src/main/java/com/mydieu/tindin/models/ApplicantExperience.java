@@ -36,6 +36,14 @@ public class ApplicantExperience {
     @Column(name = "accomplishment", length = Integer.MAX_VALUE)
     private String accomplishment;
 
+    public ApplicantExperience() {
+    }
+
+    public ApplicantExperience(Applicant applicant, Organization organization) {
+        this.applicant = applicant;
+        this.organization = organization;
+    }
+
     public Integer getId() {
         return id;
     }

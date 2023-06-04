@@ -13,6 +13,13 @@ public class JobType {
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
+    public JobType() {
+    }
+
+    public JobType(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }
