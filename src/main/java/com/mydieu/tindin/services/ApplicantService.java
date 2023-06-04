@@ -8,6 +8,8 @@ import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.ApplicantRegistration;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.repositories.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,8 +28,9 @@ public class ApplicantService {
     private final DegreeRepository degreeRepository;
     private final MajorRepository majorRepository;
     private final OrganizationRepository organizationRepository;
+    private final JobPostActivityRepository jobPostActivityRepository;
 
-    public ApplicantService(ApplicantRepository applicantRepository, AccountRepository accountRepository, ExperienceLevelRepository experienceLevelRepository, LocationRepository locationRepository, JobTypeRepository jobTypeRepository, IndustryRepository industryRepository, DegreeRepository degreeRepository, MajorRepository majorRepository, OrganizationRepository organizationRepository) {
+    public ApplicantService(ApplicantRepository applicantRepository, AccountRepository accountRepository, ExperienceLevelRepository experienceLevelRepository, LocationRepository locationRepository, JobTypeRepository jobTypeRepository, IndustryRepository industryRepository, DegreeRepository degreeRepository, MajorRepository majorRepository, OrganizationRepository organizationRepository, JobPostActivityRepository jobPostActivityRepository) {
         this.applicantRepository = applicantRepository;
         this.accountRepository = accountRepository;
         this.experienceLevelRepository = experienceLevelRepository;
@@ -37,6 +40,7 @@ public class ApplicantService {
         this.degreeRepository = degreeRepository;
         this.majorRepository = majorRepository;
         this.organizationRepository = organizationRepository;
+        this.jobPostActivityRepository = jobPostActivityRepository;
     }
 
     public List<ApplicantDto> findApplicants(
@@ -277,6 +281,19 @@ public class ApplicantService {
         }
 
         updateUserInfo(updateApplicant, applicantRegistration);
+
+        if (applicantRegistration.educations() != null && !applicantRegistration.educations().isEmpty()) {
+            updateApplicant.getApplicantEducations().clear();
+        }
+
+        if (applicantRegistration.experiences() != null && !applicantRegistration.experiences().isEmpty()) {
+            updateApplicant.getApplicantExperiences().clear();
+        }
+
+        if (applicantRegistration.skills() != null && !applicantRegistration.skills().isEmpty()) {
+            updateApplicant.getApplicantSkills().clear();
+        }
+
         updateApplicantInfo(updateApplicant, applicantRegistration);
 
         applicantRepository.save(updateApplicant);
@@ -318,8 +335,15 @@ public class ApplicantService {
 
     }
 
-    public List<JobDto> findJobsByApplicantId(Integer applicantId) {
-        // TODO: Return jobs that the applicant with the given ID has applied for
-        return null;
+    public List<JobDto> findJobsByApplicantId(Integer applicantId, Optional<Integer> pageNumber, Optional<Integer> pageSize) {
+        Applicant applicant = applicantRepository.findById(applicantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Applicant not found"));
+
+        Integer currentPage = pageNumber.orElse(0);
+        Integer currentPageSize = pageSize.orElse(10);
+        Pageable pageable = PageRequest.of(currentPage, currentPageSize);
+
+        return jobPostActivityRepository.findJobPostsByApplicant(applicant, pageable)
+                .stream().map(JobDto::fromJobPost).toList();
     }
 }

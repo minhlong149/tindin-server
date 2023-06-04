@@ -3,6 +3,7 @@ package com.mydieu.tindin.controllers;
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.JobSmallDto;
+import com.mydieu.tindin.payload.JobRegistration;
 import com.mydieu.tindin.services.JobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,13 +54,13 @@ public class JobController {
     }
 
     @PostMapping("")
-    public void createJob(@RequestBody JobDto jobDto) {
-        jobService.createJob(jobDto);
+    public void createJob(@RequestBody JobRegistration jobRegistration) {
+        jobService.createJob(jobRegistration);
     }
 
     @PutMapping("{jobId}")
-    public void updateJob(@PathVariable Integer jobId, @RequestBody JobDto jobDto) {
-        jobService.updateJob(jobId, jobDto);
+    public void updateJob(@PathVariable Integer jobId, @RequestBody JobRegistration jobRegistration) {
+        jobService.updateJob(jobId, jobRegistration);
     }
 
     // TODO: Get applied user's ID (candidate or recruiter) from token to store to database

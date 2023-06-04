@@ -38,8 +38,12 @@ public class ApplicantController {
     }
 
     @GetMapping("{applicantId}/jobs")
-    public List<JobDto> getJobs(@PathVariable Integer applicantId) {
-        return applicantService.findJobsByApplicantId(applicantId);
+    public List<JobDto> getJobs(
+            @PathVariable Integer applicantId,
+            @RequestParam Optional<Integer> pageNumber,
+            @RequestParam Optional<Integer> pageSize
+    ) {
+        return applicantService.findJobsByApplicantId(applicantId, pageNumber, pageSize);
     }
 
     @PostMapping("")
