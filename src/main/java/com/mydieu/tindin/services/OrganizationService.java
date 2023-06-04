@@ -40,7 +40,21 @@ public class OrganizationService {
             Optional<String> location
     ) {
         // TODO: Find organizations by name, industry, location
-        return null;
+        String filter = null;
+        List<Organization> organizationList = null;
+        if(!organizationName.isEmpty()) {
+            organizationList = organizationRepository.findByName(organizationName.orElse(""));
+        }
+        if(!industry.isEmpty()) {
+            Industry industry1 = industryRepository.findByName(industry.orElse(""));
+            organizationList = organizationRepository.findByIndustry(industry1);
+        }
+        if(!location.isEmpty()) {
+            Location location1 = locationRepository.findByCity(location.orElse(""));
+            organizationList = organizationRepository.findByLocation(location1);
+        }
+
+        return organizationList.stream().map(OrganizationDto::fromOrganization).toList();
     }
         // Integer id,
         // String name,

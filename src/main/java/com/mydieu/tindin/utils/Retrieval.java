@@ -31,7 +31,7 @@ public class Retrieval {
         }
 
         // Sort the documents by their cosine similarity score
-        jobs.sort(Comparator.comparing(job -> jobScores[jobs.indexOf(job)]));
+        jobs.sort(Comparator.comparing(job -> jobScores[jobs.indexOf(job)]).reversed());
         return jobs;
     }
 
@@ -58,7 +58,7 @@ public class Retrieval {
         }
 
         // Sort the documents by their cosine similarity score
-        applicants.sort(Comparator.comparing(applicant -> applicantScores[applicants.indexOf(applicant)]));
+        applicants.sort(Comparator.comparing(applicant -> applicantScores[applicants.indexOf(applicant)]).reversed());
         return applicants;
     }
 
@@ -104,10 +104,22 @@ public class Retrieval {
         ArrayList<String> document = new ArrayList<>();
 
         document.add(applicant.getTitle());
-        document.add(applicant.getExperienceLevel().getName());
-        document.add(applicant.getPreferLocation().getCity());
-        document.add(applicant.getPreferJobType().getName());
-        document.add(applicant.getPreferIndustry().getName());
+
+        if (applicant.getExperienceLevel() != null) {
+            document.add(applicant.getExperienceLevel().getName());
+        }
+
+        if (applicant.getPreferLocation() != null) {
+            document.add(applicant.getPreferLocation().getCity());
+        }
+
+        if (applicant.getPreferJobType() != null) {
+            document.add(applicant.getPreferJobType().getName());
+
+        }
+        if (applicant.getPreferIndustry() != null) {
+            document.add(applicant.getPreferIndustry().getName());
+        }
 
         for (ApplicantEducation education : applicant.getApplicantEducations()) {
             document.add(education.getDegree().getName());
@@ -133,29 +145,13 @@ public class Retrieval {
     private static List<String> createDocument(JobPost job) {
         ArrayList<String> document = new ArrayList<>();
 
-        document.add(job.getRecruiter().getOrganization().getDescription());
-        document.add(job.getRecruiter().getOrganization().getLocation().getCity());
-        document.add(job.getRecruiter().getOrganization().getIndustry().getName());
+        if (job.getRecruiter().getOrganization() != null) {
+            document.add(job.getRecruiter().getOrganization().getDescription());
+        }
 
         document.add(job.getTitle());
         document.add(job.getDescription());
         document.add(job.getJobType().getName());
-
-        for (JobRequireDegree degree : job.getJobRequireDegrees()) {
-            document.add(degree.getDegree().getName());
-        }
-
-        for (JobRequireMajor major : job.getJobRequireMajors()) {
-            document.add(major.getMajor().getName());
-        }
-
-        for (JobRequireSkill skill : job.getJobRequireSkills()) {
-            document.add(skill.getSkill());
-        }
-
-        for (JobRequireExperienceLevel experienceLevel : job.getJobRequireExperienceLevels()) {
-            document.add(experienceLevel.getExperienceLevel().getName());
-        }
 
         String documentAsString = String.join(" ", document);
         documentAsString = documentAsString.replaceAll("[^a-zA-Z0-9\\s]", "");
