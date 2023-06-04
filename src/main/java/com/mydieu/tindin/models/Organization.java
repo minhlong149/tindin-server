@@ -33,6 +33,15 @@ public class Organization {
     @Column(name = "website", length = Integer.MAX_VALUE)
     private String website;
 
+    public Organization() {
+    }
+    
+    
+
+    public Organization(String name, String description, Integer industryId, Integer locationId, String email, String phone, String website) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public Integer getId() {
         return id;
     }
@@ -56,7 +65,6 @@ public class Organization {
     public void setDescription(String description) {
         this.description = description;
     }
-
     public Industry getIndustry() {
         return industry;
     }
@@ -72,6 +80,7 @@ public class Organization {
     public void setLocation(Location location) {
         this.location = location;
     }
+    
 
     public String getEmail() {
         return email;
