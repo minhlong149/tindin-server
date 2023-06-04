@@ -13,6 +13,13 @@ public class Industry {
     @Column(name = "name", nullable = false, length = Integer.MAX_VALUE)
     private String name;
 
+    public Industry() {
+    }
+
+    public Industry(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

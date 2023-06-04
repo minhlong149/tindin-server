@@ -41,6 +41,15 @@ public class ApplicantEducation {
     @Column(name = "gpa")
     private BigDecimal gpa;
 
+    public ApplicantEducation() {
+    }
+
+    public ApplicantEducation(Applicant applicant, String universityName) {
+        this.id = applicant.getId();
+        this.applicant = applicant;
+        this.universityName = universityName;
+    }
+
     public Integer getId() {
         return id;
     }
