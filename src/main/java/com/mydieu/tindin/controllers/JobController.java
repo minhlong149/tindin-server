@@ -22,7 +22,7 @@ public class JobController {
 
     @GetMapping("")
     public List<JobSmallDto> getJobs(
-            @RequestBody Optional<Integer> applicantId,
+            @RequestParam Optional<Integer> applicantId,
             @RequestParam Optional<String> jobTitle,
             @RequestParam Optional<String> jobType,
             @RequestParam Optional<String> jobLocation,
