@@ -41,7 +41,7 @@ public class OrganizationService {
     ) {
         // TODO: Find organizations by name, industry, location
         String filter = null;
-        List<Organization> organizationList = null;
+        List<Organization> organizationList =organizationRepository.findAll();
         if(!organizationName.isEmpty()) {
             organizationList = organizationRepository.findByName(organizationName.orElse(""));
         }
