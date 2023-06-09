@@ -22,11 +22,12 @@ public record OrganizationDto(
                 organization.getId(),
                 organization.getName(),
                 organization.getDescription(),
-                organization.getIndustry().getName(),
-                organization.getLocation().getCity(),
+                organization.getIndustry() != null ? organization.getIndustry().getName() : null,
+                organization.getLocation() != null ? organization.getLocation().getCity() : null,
                 organization.getEmail(),
                 organization.getPhone(),
                 organization.getWebsite()
         );
     }
+
 }

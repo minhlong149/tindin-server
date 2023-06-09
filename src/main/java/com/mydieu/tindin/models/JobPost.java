@@ -55,6 +55,16 @@ public class JobPost {
     @OneToMany(mappedBy = "job")
     private Set<JobRequireDegree> jobRequireDegrees = new LinkedHashSet<>();
 
+    public JobPost() {
+    
+    }
+    
+    
+
+    public JobPost(Recruiter recruiter, Integer recruiterId, String title, String description, String jobTypeId, Integer salary, Instant createdDate, Instant closingDate, Boolean open) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public Integer getId() {
         return id;
     }
@@ -71,6 +81,15 @@ public class JobPost {
         this.recruiter = recruiter;
     }
 
+    public JobType getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(JobType jobType) {
+        this.jobType = jobType;
+    }
+    
+
     public String getTitle() {
         return title;
     }
@@ -85,14 +104,6 @@ public class JobPost {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public JobType getJobType() {
-        return jobType;
-    }
-
-    public void setJobType(JobType jobType) {
-        this.jobType = jobType;
     }
 
     public Integer getSalary() {

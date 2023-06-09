@@ -2,6 +2,7 @@ package com.mydieu.tindin.controllers;
 
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.OrganizationDto;
+import com.mydieu.tindin.payload.OrganizationRegistration;
 import com.mydieu.tindin.services.OrganizationService;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,12 +38,12 @@ public class OrganizationController {
     }
 
     @PostMapping("")
-    public void createOrganization(@RequestBody OrganizationDto organizationDto) {
-        organizationService.createOrganization(organizationDto);
+    public void createOrganization(@RequestBody OrganizationRegistration organizationRegistration) {
+        organizationService.createOrganization(organizationRegistration);
     }
 
     @PutMapping("{organizationId}")
-    public void updateOrganization(@PathVariable Integer organizationId, @RequestBody OrganizationDto organizationDto) {
-        organizationService.updateOrganization(organizationId, organizationDto);
+    public void updateOrganization(@PathVariable Integer organizationId, @RequestBody OrganizationRegistration organizationRegistration) {
+        organizationService.updateOrganization(organizationId, organizationRegistration);
     }
 }

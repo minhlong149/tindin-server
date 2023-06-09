@@ -2,6 +2,8 @@ package com.mydieu.tindin.controllers;
 
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
+import com.mydieu.tindin.payload.JobSmallDto;
+import com.mydieu.tindin.payload.JobRegistration;
 import com.mydieu.tindin.services.JobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ public class JobController {
     }
 
     @GetMapping("")
-    public List<JobDto> getJobs(
+    public List<JobSmallDto> getJobs(
             @RequestBody Optional<Integer> applicantId,
             @RequestParam Optional<String> jobTitle,
             @RequestParam Optional<String> jobType,
@@ -28,9 +30,12 @@ public class JobController {
             @RequestParam Optional<String> organizationIndustry,
             @RequestParam Optional<String> skills,
             @RequestParam Optional<String> experienceLevel,
-            @RequestParam Optional<Integer> minimumSalary
+            @RequestParam Optional<Integer> minimumSalary,
+            @RequestParam Optional<Integer> pageNumber,
+            @RequestParam Optional<Integer> pageSize
+
     ) {
-        return jobService.findJobs(applicantId, jobTitle, jobType, jobLocation, organizationName, organizationIndustry, skills, experienceLevel, minimumSalary);
+        return jobService.findJobs(applicantId, jobTitle, jobType, jobLocation, organizationName, organizationIndustry, skills, experienceLevel, minimumSalary, pageNumber, pageSize);
     }
 
     @GetMapping("{jobId}")
@@ -49,21 +54,21 @@ public class JobController {
     }
 
     @PostMapping("")
-    public void createJob(@RequestBody JobDto jobDto) {
-        jobService.createJob(jobDto);
+    public void createJob(@RequestBody JobRegistration jobRegistration) {
+        jobService.createJob(jobRegistration);
     }
 
     @PutMapping("{jobId}")
-    public void updateJob(@PathVariable Integer jobId, @RequestBody JobDto jobDto) {
-        jobService.updateJob(jobId, jobDto);
+    public void updateJob(@PathVariable Integer jobId, @RequestBody JobRegistration jobRegistration) {
+        jobService.updateJob(jobId, jobRegistration);
     }
 
     // TODO: Get applied user's ID (candidate or recruiter) from token to store to database
     @PostMapping("{jobId}")
     public void applyForJob(
             @PathVariable Integer jobId,
-            @RequestBody Integer appliedUserId,
-            @RequestBody Integer applicantId
+            @RequestParam Integer appliedUserId,
+            @RequestParam Integer applicantId
     ) {
         jobService.applyForJob(jobId, applicantId, appliedUserId);
     }

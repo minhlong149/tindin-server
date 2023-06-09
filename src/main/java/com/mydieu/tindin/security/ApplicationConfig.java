@@ -1,6 +1,6 @@
 package com.mydieu.tindin.security;
 
-import com.mydieu.tindin.repositories.AccountRepository;
+import com.mydieu.tindin.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,24 +15,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class ApplicationConfig {
 
-    private final AccountRepository repository;
+    private final UserRepository repository;
 
-    public ApplicationConfig(AccountRepository repository) {
+    public ApplicationConfig(UserRepository repository) {
         this.repository = repository;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        return username -> repository.findByUsername(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return null;
     }
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(UserDetailsService userDetailsService, JwtService jwtService) {
-        return new JwtAuthenticationFilter(userDetailsService, jwtService);
-    }
-
-
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -40,6 +34,11 @@ public class ApplicationConfig {
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return authenticationManager(null);
     }
 
     @Bean
@@ -51,5 +50,4 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

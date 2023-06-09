@@ -13,6 +13,13 @@ public class Location {
     @Column(name = "city", nullable = false, length = Integer.MAX_VALUE)
     private String city;
 
+    public Location() {
+    }
+
+    public Location(String city) {
+        this.city = city;
+    }
+
     public Integer getId() {
         return id;
     }

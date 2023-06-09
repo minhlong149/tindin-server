@@ -5,6 +5,9 @@ public class AuthenticationResponse {
     private Integer userId;
     private String role;
 
+    public AuthenticationResponse() {
+    }
+
     public AuthenticationResponse(String token, Integer userId, String role) {
         this.token = token;
         this.userId = userId;
