@@ -6,6 +6,7 @@ import com.mydieu.tindin.models.*;
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.JobRegistration;
+import com.mydieu.tindin.payload.JobSmallDto;
 import com.mydieu.tindin.repositories.ApplicantRepository;
 import com.mydieu.tindin.repositories.JobPostActivityRepository;
 import com.mydieu.tindin.repositories.JobPostRepository;
