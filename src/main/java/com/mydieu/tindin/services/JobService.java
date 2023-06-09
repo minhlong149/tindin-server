@@ -1,6 +1,5 @@
 package com.mydieu.tindin.services;
 
-import com.mydieu.tindin.payload.JobSmallDto;
 import com.mydieu.tindin.exception.InvalidRequestException;
 import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.models.*;
@@ -60,7 +59,7 @@ public class JobService {
         if(applicantId.isPresent()) {
             id = applicantId.orElse(0);
         }
-        Applicant applicant = applicantRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Applicant not found"));
+        Applicant applicant = applicantRepository.findById(id).orElseThrow();
 
         Specification<JobPost> spec = Specification.where(null);
 
@@ -85,6 +84,9 @@ public class JobService {
         if(organizationIndustry.isPresent()) {
             spec =spec.and(JobPostSpecification.jobOrganizationIndustryLike(organizationIndustry.get()));
         }
+//        else {
+//            spec = spec.and(JobPostSpecification.jobTypeLike(applicant.getPreferIndustry().getName()));
+//        }
 
         if(skills.isPresent()){
             spec=spec.and(JobPostSpecification.jobSkillIs(skills.get()));
@@ -101,7 +103,7 @@ public class JobService {
         }
         Integer currentPage = pageNumber.orElse(0);
         Integer currentPageSize = pageSize.orElse(15);
-        Integer sizeList = jobPostRepository.findAll(spec).size();
+
         List<JobPost> jobFilter = jobPostRepository.findAll(spec)
                                 .stream()
                                 .skip(currentPage * currentPageSize)
@@ -179,6 +181,7 @@ public class JobService {
             job.setIsOpen(newJob.isOpen());
         }
         jobPostRepository.save(job);
+
     }
 
     public void applyForJob(Integer jobId, Integer applicantId, Integer appliedUserId) {

@@ -1,7 +1,11 @@
 package com.mydieu.tindin.services;
 
 import com.mydieu.tindin.repositories.*;
+import com.mydieu.tindin.models.*;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AutocompleteService {
@@ -31,31 +35,31 @@ public class AutocompleteService {
         this.majorRepository = majorRepository;
     }
 
-    public String getLocations() {
-        return null;
+    public List<Location> getLocations() {
+        return locationRepository.findAll();
     }
 
-    public String getDegrees() {
-        return null;
+    public List<Degree> getDegrees() {
+        return degreeRepository.findAll();
     }
 
-    public String getMajors() {
-        return null;
+    public List<Major> getMajors() {
+        return majorRepository.findAll();
     }
 
-    public String getOrganizations() {
-        return null;
+    public List<Organization> getOrganizations() {
+        return organizationRepository.findAll();
     }
 
-    public String getIndustries() {
-        return null;
+    public List<Industry> getIndustries() {
+        return industryRepository.findAll();
     }
 
-    public String getJobTypes() {
-        return null;
+    public List<JobType> getJobTypes() {
+        return jobTypeRepository.findAll();
     }
 
-    public String getExperienceLevels() {
-        return null;
+    public List<ExperienceLevel> getExperienceLevels() {
+        return experienceLevelRepository.findAll();
     }
 }
