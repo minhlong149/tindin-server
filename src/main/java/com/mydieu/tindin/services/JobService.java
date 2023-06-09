@@ -67,7 +67,7 @@ public class JobService {
         if (jobTitle.isPresent()) {
             spec = spec.and(JobPostSpecification.jobTitleContains(jobTitle.orElse("")));
         }else {
-            spec = spec.and(JobPostSpecification.jobTitleContains("Teacher"));
+            spec = spec.and(JobPostSpecification.jobTitleContains(applicant.getTitle()));
         }
 
         if (jobType.isPresent()) {
