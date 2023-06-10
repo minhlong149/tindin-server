@@ -1,6 +1,6 @@
 package com.mydieu.tindin.security;
 
-import com.mydieu.tindin.repositories.UserRepository;
+import com.mydieu.tindin.repositories.AccountRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,17 +15,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class ApplicationConfig {
 
-    private final UserRepository repository;
+    private final AccountRepository repository;
 
-    public ApplicationConfig(UserRepository repository) {
+    public ApplicationConfig(AccountRepository repository) {
         this.repository = repository;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-//        return username -> repository.findByUsername(username)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return null;
+        return username -> repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        return null;
     }
 
     @Bean
@@ -36,10 +36,10 @@ public class ApplicationConfig {
         return authProvider;
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        return authenticationManager(null);
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager() throws Exception {
+//        return authenticationManager(null);
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {

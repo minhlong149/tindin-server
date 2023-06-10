@@ -3,6 +3,7 @@ package com.mydieu.tindin.security;
 import jakarta.servlet.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,16 +22,31 @@ public class SecurityConfiguration {
         this.authenticationProvider = authenticationProvider;
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf()
+//                .disable()
+//                .authorizeRequests()
+//                .dispatcherTypeMatchers(HttpMethod.GET).permitAll() // Cho phép tất cả các yêu cầu GET mà không cần xác thực
+//                .anyRequest().authenticated() // Yêu cầu các yêu cầu khác phải được xác thực
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authenticationProvider(authenticationProvider)
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .requestMatchers("/api/v1/auth/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .anyRequest().permitAll() // Cho phép tất cả các yêu cầu không cần xác thực
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -40,4 +56,5 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 }
