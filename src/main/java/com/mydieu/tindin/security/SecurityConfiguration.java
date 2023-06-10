@@ -22,39 +22,20 @@ public class SecurityConfiguration {
         this.authenticationProvider = authenticationProvider;
     }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf()
-//                .disable()
-//                .authorizeRequests()
-//                .dispatcherTypeMatchers(HttpMethod.GET).permitAll() // Cho phép tất cả các yêu cầu GET mà không cần xác thực
-//                .anyRequest().authenticated() // Yêu cầu các yêu cầu khác phải được xác thực
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                .anyRequest().permitAll() // Cho phép tất cả các yêu cầu không cần xác thực
+                .csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling();
         return http.build();
-    }
-
+        }
 }
