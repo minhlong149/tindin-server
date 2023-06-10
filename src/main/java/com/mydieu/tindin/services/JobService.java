@@ -68,16 +68,23 @@ public class JobService {
 
         if (jobTitle.isPresent()) {
             spec = spec.and(JobPostSpecification.jobTitleContains(jobTitle.orElse("")));
-        }else {
+        }
+        else {
             spec = spec.and(JobPostSpecification.jobTitleContains(applicant.getTitle()));
         }
 
         if (jobType.isPresent()) {
             spec = spec.and(JobPostSpecification.jobTypeLike(jobType.get()));
         }
+        else {
+            spec = spec.or(JobPostSpecification.jobTypeLike(applicant.getPreferJobType().getName()));
+        }
 
         if (jobLocation.isPresent()) {
             spec = spec.and(JobPostSpecification.jobLocationLike(jobLocation.get()));
+        }
+        else {
+            spec= spec.or(JobPostSpecification.jobLocationLike((applicant.getPreferLocation().getCity())));
         }
 
         if (organizationName.isPresent()){
@@ -87,9 +94,7 @@ public class JobService {
         if(organizationIndustry.isPresent()) {
             spec =spec.and(JobPostSpecification.jobOrganizationIndustryLike(organizationIndustry.get()));
         }
-//        else {
-//            spec = spec.and(JobPostSpecification.jobTypeLike(applicant.getPreferIndustry().getName()));
-//        }
+
 
         if(skills.isPresent()){
             spec=spec.and(JobPostSpecification.jobSkillIs(skills.get()));
@@ -101,8 +106,9 @@ public class JobService {
 
         if(minimumSalary.isPresent()){
             spec=spec.and(JobPostSpecification.jobMinimumSalaryIs(minimumSalary.get()));
-        }else{
-            spec=spec.and(JobPostSpecification.jobMinimumSalaryIs(applicant.getPreferSalary()));
+        }
+        else{
+            spec=spec.or(JobPostSpecification.jobMinimumSalaryIs(applicant.getPreferSalary()));
         }
         Integer currentPage = pageNumber.orElse(0);
         Integer currentPageSize = pageSize.orElse(15);
