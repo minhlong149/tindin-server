@@ -38,5 +38,5 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling();
         return http.build();
-        }
+    }
 }
