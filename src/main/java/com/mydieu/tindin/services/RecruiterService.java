@@ -13,6 +13,7 @@ import com.mydieu.tindin.repositories.OrganizationRepository;
 import com.mydieu.tindin.repositories.RecruiterRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +25,14 @@ public class RecruiterService {
     private final JobPostRepository jobPostRepository;
     private final AccountRepository accountRepository;
     private final OrganizationRepository organizationRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public RecruiterService(RecruiterRepository recruiterRepository, JobPostRepository jobPostRepository, AccountRepository accountRepository, OrganizationRepository organizationRepository) {
+    public RecruiterService(RecruiterRepository recruiterRepository, JobPostRepository jobPostRepository, AccountRepository accountRepository, OrganizationRepository organizationRepository, PasswordEncoder passwordEncoder) {
         this.recruiterRepository = recruiterRepository;
         this.jobPostRepository = jobPostRepository;
         this.accountRepository = accountRepository;
         this.organizationRepository = organizationRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public RecruiterDto findRecruiterById(Integer recruiterId) {
@@ -64,7 +67,7 @@ public class RecruiterService {
                 .orElseThrow(() -> new InvalidRequestException("Organization ID is invalid"));
 
         User newUser = new User(
-                new Account(recruiter.username(), recruiter.password()),
+                new Account(recruiter.username(), passwordEncoder.encode(recruiter.password())),
                 Role.RECRUITER,
                 recruiter.firstName(),
                 recruiter.lastName(),
@@ -93,7 +96,7 @@ public class RecruiterService {
         }
 
         if (newRecruiter.password() != null && !newRecruiter.password().isBlank()) {
-            recruiter.getUser().getAccount().setPassword(newRecruiter.password());
+            recruiter.getUser().getAccount().setPassword(passwordEncoder.encode(newRecruiter.password()));
         }
 
         if (newRecruiter.firstName() != null && !newRecruiter.firstName().isBlank()) {
