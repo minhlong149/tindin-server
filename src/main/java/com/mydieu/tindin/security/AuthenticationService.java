@@ -29,22 +29,14 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
+    public AuthenticationResponse register(RegisteredRequest request) {
+        return null;
+    }
+
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
-
-//        // Authentication successful, generate JWT token
-//        Account account = accountRepository.findByUsername(request.getUsername())
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        User user = userRepository.findById(account.getId())
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        var jwtToken = jwtService.generateToken(account);
-//        Integer userId = user.getId();
-//        String role = user.getRole().name();
-//        return new AuthenticationResponse(jwtToken, userId, role);
         Account account = accountRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
