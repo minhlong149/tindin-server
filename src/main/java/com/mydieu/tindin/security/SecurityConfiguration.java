@@ -1,5 +1,6 @@
 package com.mydieu.tindin.security;
 
+import jakarta.servlet.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/authentication").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -37,5 +39,4 @@ public class SecurityConfiguration {
                 .exceptionHandling();
         return http.build();
     }
-
 }
