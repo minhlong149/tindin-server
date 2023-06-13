@@ -1,4 +1,6 @@
 package com.mydieu.tindin.controllers;
+
+
 import com.mydieu.tindin.security.AuthenticationRequest;
 import com.mydieu.tindin.security.AuthenticationResponse;
 import com.mydieu.tindin.security.AuthenticationService;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @RequestMapping("api/auth")
 public class AuthenticationController {
 
