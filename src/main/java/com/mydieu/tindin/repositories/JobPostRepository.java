@@ -14,5 +14,6 @@ public interface JobPostRepository extends JpaRepository<JobPost, Integer>, JpaS
     @Query("SELECT j FROM JobPost j WHERE j.recruiter.organization.id = ?1")
     public List<JobPost> findJobsByOrganizationId(Integer organizationId);
 
+    List<JobPost> findAll(Specification<JobPost> specification);
     List<JobPost> findByTitle(String title);
 }

@@ -1,14 +1,12 @@
 package com.mydieu.tindin.services;
 
-import com.mydieu.tindin.payload.JobSmallDto;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import com.mydieu.tindin.exception.InvalidRequestException;
 import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.models.*;
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.JobRegistration;
+import com.mydieu.tindin.payload.JobSmallDto;
 import com.mydieu.tindin.repositories.ApplicantRepository;
 import com.mydieu.tindin.repositories.JobPostActivityRepository;
 import com.mydieu.tindin.repositories.JobPostRepository;
@@ -190,6 +188,7 @@ public class JobService {
             job.setIsOpen(newJob.isOpen());
         }
         jobPostRepository.save(job);
+
     }
 
     public void applyForJob(Integer jobId, Integer applicantId, Integer appliedUserId) {
