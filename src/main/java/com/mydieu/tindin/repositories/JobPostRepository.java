@@ -2,6 +2,7 @@ package com.mydieu.tindin.repositories;
 
 import com.mydieu.tindin.models.JobPost;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +16,6 @@ public interface JobPostRepository extends JpaRepository<JobPost, Integer>, JpaS
     public List<JobPost> findJobsByOrganizationId(Integer organizationId);
 
     List<JobPost> findAll(Specification<JobPost> specification);
+
     List<JobPost> findByTitle(String title);
 }
