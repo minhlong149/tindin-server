@@ -1,23 +1,19 @@
 package com.mydieu.tindin.services;
 
+import com.mydieu.tindin.payload.JobSmallDto;
+import com.mydieu.tindin.repositories.*;
 import com.mydieu.tindin.exception.InvalidRequestException;
 import com.mydieu.tindin.exception.ResourceNotFoundException;
 import com.mydieu.tindin.models.*;
 import com.mydieu.tindin.payload.ApplicantDto;
 import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.payload.JobRegistration;
-import com.mydieu.tindin.payload.JobSmallDto;
-import com.mydieu.tindin.repositories.ApplicantRepository;
-import com.mydieu.tindin.repositories.JobPostActivityRepository;
-import com.mydieu.tindin.repositories.JobPostRepository;
-import com.mydieu.tindin.repositories.RecruiterRepository;
-import com.mydieu.tindin.repositories.UserRepository;
 
 import org.springframework.stereotype.Service;
 import com.mydieu.tindin.utils.Retrieval;
 import com.mydieu.tindin.specification.JobPostSpecification;
+import com.mydieu.tindin.specification.ApplicantSpecification;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -33,13 +29,21 @@ public class JobService {
     private final UserRepository userRepository;
     private final JobPostActivityRepository jobPostActivityRepository;
     private final RecruiterRepository recruiterRepository;
+    private final JobRequireDegreeRepository jobRequireDegree;
+    private final JobRequireSkillRepository jobRequireSkill;
+    private final JobRequireExperienceLevelRepository jobRequireExperienceLevelRepository;
+    private final JobRequireMajorRepository jobRequireMajorRepository;
 
-    public JobService(JobPostRepository jobPostRepository, ApplicantRepository applicantRepository, UserRepository userRepository, JobPostActivityRepository jobPostActivityRepository, RecruiterRepository recruiterRepository) {
+    public JobService(JobPostRepository jobPostRepository, ApplicantRepository applicantRepository, UserRepository userRepository, JobPostActivityRepository jobPostActivityRepository, RecruiterRepository recruiterRepository, JobRequireDegreeRepository jobRequireDegree, JobRequireSkillRepository jobRequireSkill, JobRequireExperienceLevelRepository jobRequireExperienceLevelRepository, JobRequireMajorRepository jobRequireMajorRepository) {
         this.jobPostRepository = jobPostRepository;
         this.applicantRepository = applicantRepository;
         this.userRepository = userRepository;
         this.jobPostActivityRepository = jobPostActivityRepository;
         this.recruiterRepository = recruiterRepository;
+        this.jobRequireDegree = jobRequireDegree;
+        this.jobRequireSkill = jobRequireSkill;
+        this.jobRequireExperienceLevelRepository = jobRequireExperienceLevelRepository;
+        this.jobRequireMajorRepository = jobRequireMajorRepository;
     }
 
     public List<JobSmallDto> findJobs(
@@ -188,7 +192,6 @@ public class JobService {
             job.setIsOpen(newJob.isOpen());
         }
         jobPostRepository.save(job);
-
     }
 
     public void applyForJob(Integer jobId, Integer applicantId, Integer appliedUserId) {
@@ -240,7 +243,8 @@ public class JobService {
     public List<ApplicantDto> findRecommendedApplicantsByJobId(Integer jobId) {
         // TODO: Find applicants suitable for job
         JobPost jobPost = jobPostRepository.findById(jobId).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
-        List<Applicant> applicantList = jobPostActivityRepository.findApplicantByJob(jobPost);
+
+        List<Applicant> applicantList = applicantRepository.findAll();
         List<Applicant> sortApplicant = Retrieval.sortApplicants(applicantList,jobPost);
         return sortApplicant.stream().map(ApplicantDto::fromApplicant).toList();
 
