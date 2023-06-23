@@ -14,7 +14,7 @@ public final class JobPostSpecification {
     }
 
     public static Specification<JobPost> jobLocationLike(String jobLocation) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.join("recruiter").join("organization").join("location").get("city"),jobLocation);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.join("recruiter").join("organization").join("location").get("city"), "%"+ jobLocation +"%");
     }
     public static Specification<JobPost> jobOrganizationNameLike(String organizationName) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.join("recruiter").join("organization").get("name"),"%" + organizationName + "%" );
