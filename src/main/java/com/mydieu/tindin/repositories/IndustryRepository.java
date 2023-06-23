@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface IndustryRepository extends JpaRepository<Industry, Integer> {
     Industry findByName (String name);
+
+    Industry findByNameContaining(String name);
 }
