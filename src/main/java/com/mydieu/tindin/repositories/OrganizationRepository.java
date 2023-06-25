@@ -11,4 +11,8 @@ public interface OrganizationRepository extends JpaRepository<Organization, Inte
     List<Organization> findByName (String name);
     List<Organization> findByIndustry (Industry industry);
     List<Organization> findByLocation (Location location);
+
+    List<Organization> findByNameContaining(String s);
+
+
 }

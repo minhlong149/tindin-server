@@ -43,14 +43,15 @@ public class OrganizationService {
         String filter = null;
         List<Organization> organizationList = organizationRepository.findAll();
         if(!organizationName.isEmpty()) {
-            organizationList = organizationRepository.findByName(organizationName.orElse(""));
+            organizationList = organizationRepository.findByNameContaining(organizationName.orElse(""));
         }
         if(!industry.isEmpty()) {
-            Industry industry1 = industryRepository.findByName(industry.orElse(""));
+
+            Industry industry1 = industryRepository.findByNameContaining(industry.orElse(""));
             organizationList = organizationRepository.findByIndustry(industry1);
         }
         if(!location.isEmpty()) {
-            Location location1 = locationRepository.findByCity(location.orElse(""));
+            Location location1 = locationRepository.findByCityContaining(location.orElse(""));
             organizationList = organizationRepository.findByLocation(location1);
         }
 
