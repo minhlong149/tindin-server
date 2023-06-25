@@ -122,14 +122,22 @@ public class Retrieval {
         }
 
         for (ApplicantEducation education : applicant.getApplicantEducations()) {
-            document.add(education.getDegree().getName());
-            document.add(education.getMajor().getName());
+            if (education.getDegree() != null) {
+                document.add(education.getDegree().getName());
+            }
+
+            if (education.getMajor() != null) {
+                document.add(education.getMajor().getName());
+            }
         }
 
         for (ApplicantExperience experience : applicant.getApplicantExperiences()) {
             document.add(experience.getTitle());
             document.add(experience.getAccomplishment());
-            document.add(experience.getExperienceLevel().getName());
+
+            if (experience.getExperienceLevel() != null) {
+                document.add(experience.getExperienceLevel().getName());
+            }
         }
 
         for (ApplicantSkill skill : applicant.getApplicantSkills()) {

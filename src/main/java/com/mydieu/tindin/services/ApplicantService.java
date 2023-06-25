@@ -10,6 +10,7 @@ import com.mydieu.tindin.payload.JobDto;
 import com.mydieu.tindin.repositories.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,8 +30,9 @@ public class ApplicantService {
     private final MajorRepository majorRepository;
     private final OrganizationRepository organizationRepository;
     private final JobPostActivityRepository jobPostActivityRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ApplicantService(ApplicantRepository applicantRepository, AccountRepository accountRepository, ExperienceLevelRepository experienceLevelRepository, LocationRepository locationRepository, JobTypeRepository jobTypeRepository, IndustryRepository industryRepository, DegreeRepository degreeRepository, MajorRepository majorRepository, OrganizationRepository organizationRepository, JobPostActivityRepository jobPostActivityRepository) {
+    public ApplicantService(ApplicantRepository applicantRepository, AccountRepository accountRepository, ExperienceLevelRepository experienceLevelRepository, LocationRepository locationRepository, JobTypeRepository jobTypeRepository, IndustryRepository industryRepository, DegreeRepository degreeRepository, MajorRepository majorRepository, OrganizationRepository organizationRepository, JobPostActivityRepository jobPostActivityRepository, PasswordEncoder passwordEncoder) {
         this.applicantRepository = applicantRepository;
         this.accountRepository = accountRepository;
         this.experienceLevelRepository = experienceLevelRepository;
@@ -41,6 +43,7 @@ public class ApplicantService {
         this.majorRepository = majorRepository;
         this.organizationRepository = organizationRepository;
         this.jobPostActivityRepository = jobPostActivityRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<ApplicantDto> findApplicants(
@@ -80,7 +83,7 @@ public class ApplicantService {
         }
 
         User newUser = new User(
-                new Account(applicant.username(), applicant.password()),
+                new Account(applicant.username(), passwordEncoder.encode(applicant.password())),
                 Role.CANDIDATE,
                 applicant.firstName(),
                 applicant.lastName(),
@@ -277,7 +280,7 @@ public class ApplicantService {
         }
 
         if (applicantRegistration.password() != null && !applicantRegistration.password().isBlank()) {
-            updateApplicant.getUser().getAccount().setPassword(applicantRegistration.password());
+            updateApplicant.getUser().getAccount().setPassword(passwordEncoder.encode(applicantRegistration.password()));
         }
 
         updateUserInfo(updateApplicant, applicantRegistration);

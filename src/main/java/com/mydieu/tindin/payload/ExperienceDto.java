@@ -20,7 +20,7 @@ public record ExperienceDto(
         return new ExperienceDto(
                 OrganizationDto.fromOrganization(applicantExperience.getOrganization()),
                 applicantExperience.getTitle(),
-                applicantExperience.getExperienceLevel().getName(),
+                applicantExperience.getExperienceLevel() == null ? null : applicantExperience.getExperienceLevel().getName(),
                 applicantExperience.getStartDate(),
                 applicantExperience.getEndDate(),
                 applicantExperience.getAccomplishment()
